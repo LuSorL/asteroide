@@ -1,6 +1,6 @@
 // #ifndef VAISSEAU_HPP  
 // #define VAISSEAU_HPP
-#include "SDL.h"
+#include "./include/SDL2/SDL.h"
 
 class vaisseau {
     public : 

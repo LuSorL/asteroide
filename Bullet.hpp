@@ -1,6 +1,6 @@
 //#ifndef BULLET_HPP  
 //#define BULLET_HPP
-#include "SDL.h"
+#include "./include/SDL2/SDL.h"
 
 class Bullet {
     public : 

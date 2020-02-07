@@ -2,7 +2,7 @@
 
 const float SIZE_AST = 70; // a changer
 
-Asteroide::Asteroide(/*Jeu*/ SDL_Renderer *renderer, std::string path) 
+Asteroide::Asteroide(/*Jeu*/ SDL_Renderer *renderer, const char* path) 
 {
     SDL_Texture *Texture_ast;
     SDL_Surface *asteroide = SDL_LoadBMP(path);

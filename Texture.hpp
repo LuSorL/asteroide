@@ -1,6 +1,6 @@
 // #ifndef TEXTURE_HPP
 // #define TEXTURE_HPP    
-#include "SDL.h"
+#include "./include/SDL2/SDL.h"
 
 class Texture {
     public : 
