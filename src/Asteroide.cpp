@@ -27,8 +27,8 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     }
     SDL_FreeSurface(asteroide);
 
-    x = WIDTH_SCREEN/2 - (Box.w)/2 ;
-	y = HEIGHT_SCREEN/2 - (Box.h)/2 ;  
+    x = Random(0, WIDTH_SCREEN) ;
+	y = Random(0, HEIGHT_SCREEN) ;  
 
 	angle = 0;
 
@@ -41,14 +41,12 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
 	src.h = H;
 
 
-    dest_ast.x = WIDTH_SCREEN/2-L/2;
-    dest_ast.y = HEIGHT_SCREEN/2-H/2;
+    dest_ast.x = x;
+    dest_ast.y = y;
     dest_ast.w = L;
     dest_ast.h = H;
 
   
-    position.x = x;
-    position.y = y;
 
     // position[0] = Asteroide::Random(0,HEIGHT_SCREEN);
     // position[1] = Asteroide::Random(0,WIDTH_SCREEN);
@@ -134,6 +132,10 @@ void Asteroide::Render(){
 
 
 void Asteroide::Render2(void) {
-    SDL_RenderCopy(renderer, Texture_ast, NULL, &position);
+    SDL_RenderCopy(renderer, Texture_ast, NULL, &dest_ast);
 	//SDL_RenderCopyEx(renderer, Texture_ast, &src , &position, angle, NULL, SDL_FLIP_NONE);
+}
+
+void Asteroide::clean(){
+	SDL_DestroyTexture(Texture_ast);
 }

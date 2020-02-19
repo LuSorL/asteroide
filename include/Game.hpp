@@ -35,6 +35,7 @@ class Game{
     int hauteur;
     vaisseau* rocket;
     Asteroide* asteroide;
+    Asteroide* asteroide1;
     //Bullet bullet;
 };
 #endif

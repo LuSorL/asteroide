@@ -81,6 +81,7 @@ void Game::run(){
         SDL_RenderCopy(renderer,texture,NULL,&dest);
         rocket->Render2();
         asteroide->Render2();
+        asteroide1->Render2();
         SDL_RenderPresent(renderer);
     }
     
@@ -88,6 +89,7 @@ void Game::run(){
 
 void Game::newGame(){
     asteroide = new Asteroide(renderer, "./src/asteroide1.bmp");
+    asteroide1 = new Asteroide(renderer, "./src/asteroide1.bmp");
     rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
     //bullet* missile = Bullet(renderer, 400,500,0);
 }
@@ -109,6 +111,7 @@ void Game::clean(){
     SDL_DestroyRenderer(renderer);  
     SDL_DestroyTexture(texture);
     rocket->clean();
+    asteroide->clean();
     // Clean up
     SDL_Quit();
 }

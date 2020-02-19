@@ -21,10 +21,11 @@ class Asteroide {
     float GetSize();
     void Render();
     void Render2(void);
+    void clean();
+
 
 
     protected : //private ?
-    SDL_Rect position;
     SDL_Rect speed;
     SDL_Renderer *renderer;
     SDL_Texture *Texture_ast;
@@ -32,8 +33,6 @@ class Asteroide {
     int access;
     SDL_Rect src;
     SDL_Rect dest_ast;
-    int width;
-    int height;
     int L;
     int H;
     int result;
