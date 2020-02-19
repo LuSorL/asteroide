@@ -9,6 +9,8 @@
 #include "vaisseau.hpp"
 #include "Asteroide.hpp"
 
+#define NB_AST 30
+
 
 using namespace std;
 
@@ -34,8 +36,7 @@ class Game{
     int largeur;
     int hauteur;
     vaisseau* rocket;
-    Asteroide* asteroide;
-    Asteroide* asteroide1;
+    Asteroide* asteroide[NB_AST];
     //Bullet bullet;
 };
 #endif
