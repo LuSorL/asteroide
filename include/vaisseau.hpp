@@ -12,10 +12,6 @@ class vaisseau {
     ~vaisseau();
     void Reset(); //Reset Game
     void Rotate(int direction); // rotation du vaisseau
-    void moveLeft(float angle);
-    void moveRight(float angle);
-    void moveUp(float angle);
-    void moveDown(float angle);
     void clean();
     void ResetBulletCoolDown();
     void handleEvent(SDL_Event &e,SDL_Texture* texture, SDL_Rect &dest);
@@ -24,10 +20,14 @@ class vaisseau {
     void EndFire();
     void Render();
     void Render2(void);
+    void moveUp(float angle);
+    void moveDown(float angle);
     
     protected :
     int vX; // vitesse du vaisseau
     int vY;
+    float xN;
+    float yN;
     int x, y; // position du vaisseau
     int width;
     int height;
