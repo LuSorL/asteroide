@@ -71,11 +71,16 @@ void Game::run(){
     int quit = 0;
     
     while( !quit ){
+        for (int i = 0; i < NB_AST; i++)
+        {
+            asteroide[i]->UpdateAsteroide();
+        }
         while(SDL_PollEvent(&e) ){
             if( e.type == SDL_QUIT){
                 quit = 1;
             }
                 rocket->handleEvent(e,texture,dest);
+                
         }
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer,texture,NULL,&dest);
@@ -114,7 +119,10 @@ void Game::clean(){
     SDL_DestroyRenderer(renderer);  
     SDL_DestroyTexture(texture);
     rocket->clean();
-    // asteroide->clean();
+    for (int i = 0; i < NB_AST; i++)
+    {
+        asteroide[i]->clean();
+    }
     // Clean up
     SDL_Quit();
 }
