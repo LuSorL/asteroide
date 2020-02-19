@@ -1,13 +1,16 @@
-#include "Asteroide.hpp"
+#include "../include/Asteroide.hpp"
 
 const float SIZE_AST = 70; // a changer
 
-Asteroide::Asteroide(/*Jeu*/ SDL_Renderer *renderer, const char* path) 
+Asteroide::Asteroide(SDL_Renderer *renderer, const char* path) 
 {
+    SDL_Point center = { 300, 300};
     SDL_Texture *Texture_ast;
-    SDL_Surface *asteroide = SDL_LoadBMP(path);
+    SDL_Surface *asteroide;
+    asteroide = SDL_LoadBMP(path);
     if (asteroide == NULL ){
         std::cout << "Problem surface asteroide" << SDL_GetError() << std::endl;
+
     }
     else {
         SDL_SetColorKey(asteroide, SDL_TRUE, SDL_MapRGB(asteroide->format, 255, 255, 255));
@@ -23,6 +26,15 @@ Asteroide::Asteroide(/*Jeu*/ SDL_Renderer *renderer, const char* path)
     }
     SDL_FreeSurface(asteroide);
 
+    SDL_QueryTexture(Texture_ast,&format, &access, &L, &H);
+    SDL_Rect src = {0,0, H, L};
+    SDL_Rect dest_ast = { 900/2-L/2 , 900/2-H/2, H, L};
+    result = SDL_RenderCopyEx(renderer, Texture_ast, &src , &dest_ast, angle, &center, SDL_FLIP_NONE);
+
+    if ( result != 0 ){
+        cout << SDL_GetError() << endl;
+    }
+    SDL_RenderPresent(renderer);
     position[0] = Asteroide::Random(0,800);
     position[1] = Asteroide::Random(0,900);
 
@@ -78,10 +90,13 @@ float Asteroide::Random(float x, float y){
 bool Asteroide::Collision(){
     // SDL_HasIntersection(collisionRect, ? )
 
+    return true;
     
 }
 
+
 void Asteroide::RandomSprite(){
+    /*
     int sprite = 1 + rand() % 2;
     switch (sprite){
         case 1 : 
@@ -94,6 +109,7 @@ void Asteroide::RandomSprite(){
         path = " asteroide3.bmp";
         break;
     }
+    */
 }
 
 void Asteroide::Render(){

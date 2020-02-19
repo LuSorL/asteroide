@@ -1,6 +1,9 @@
-#include "Game.hpp"
+#include "../include/Game.hpp"
 
-Game::Game(): window(0), renderer(0) {
+
+
+Game::Game() //: window(0), renderer(0) , Asteroide(renderer, "./src/asteroide1.bmp"), vaisseau(renderer, "./src/vaisseauR.bmp"), bullet(renderer, 400,500,0)
+ {
     // constructeur 
 }
 
@@ -12,21 +15,18 @@ Game::~Game(){
 int Game::initialization(){
     
     SDL_Surface *imageDeFond;
-    SDL_Texture *texture;
+    
     if (SDL_Init(SDL_INIT_VIDEO) < 0 ){
         cout << " init fail" << endl;
         return EXIT_FAILURE;
     }
 
-    int width = 800;
-    int height = 900;
-
     window = SDL_CreateWindow(
         "Game",                            // window title
         SDL_WINDOWPOS_UNDEFINED,                                // initial x position
         SDL_WINDOWPOS_UNDEFINED,                                  // initial y position
-        width,                               // width, in pixels
-        height,                               // height, in pixels
+        WIDTH_SCREEN,                               // width, in pixels
+        HEIGHT_SCREEN,                               // height, in pixels
         SDL_WINDOW_SHOWN                  
     );
 
@@ -42,7 +42,7 @@ int Game::initialization(){
         return EXIT_FAILURE;
     }
 
-    imageDeFond = SDL_LoadBMP("fond.bmp");
+    imageDeFond = SDL_LoadBMP("./src/fond.bmp");
 
     if ( imageDeFond == NULL){
         std::cout << " Problème imageDeFond" << SDL_GetError() << std::endl;
@@ -55,29 +55,59 @@ int Game::initialization(){
     }
     SDL_FreeSurface(imageDeFond);
 
+    SDL_QueryTexture(texture,&format, &access, &largeur, &hauteur);
+
+    dest.x = WIDTH_SCREEN/2 - largeur/2;
+    dest.y = HEIGHT_SCREEN/2 - hauteur/2;
+    dest.w = largeur;
+    dest.h = hauteur;
+
+    Game::newGame();
+    
     return EXIT_SUCCESS;
 }
 
-void Game::newGame(){
+void Game::run(){
+    int quit = 0;
+    
+    while( !quit ){
+        while(SDL_PollEvent(&e) ){
+            if( e.type == SDL_QUIT){
+                quit = 1;
+            }
+                rocket->handleEvent(e,texture,dest);
+        }
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer,texture,NULL,&dest);
+        rocket->Render2();
+        SDL_RenderPresent(renderer);
+    }
+    
+}
 
+void Game::newGame(){
+    //Asteroide* asteroide = new Asteroide(renderer, "./src/asteroide1.bmp");
+    rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
+    //bullet* missile = Bullet(renderer, 400,500,0);
 }
 
 void Game::Update(){
-    delete vaisseau;
+    //elete vaisseau;
     //delete texture;
-    vaisseau = new class vaisseau( renderer, "vaisseau.bmp");
+    //vaisseau = new class vaisseau( renderer, "vaisseau.bmp");
     //texture = new Texture( renderer );
 }
 
-void Game::handleEvent(){
-
+void Game::handleEvent(SDL_Event e){
+    rocket->handleEvent(e,texture,dest);
 }
 
 void Game::clean(){
-    // Close and destroy the window, the renderer and the Texture, rocket
+    // Close and destroy the window, the renderer and the Texture
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);  
     SDL_DestroyTexture(texture);
+    rocket->clean();
     // Clean up
     SDL_Quit();
 }

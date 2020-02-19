@@ -1,7 +1,8 @@
 // #ifndef ASTEROIDE_HPP  
 // #define ASTEROIDE_HPP
 #include <vector>
-#include "./include/SDL2/SDL.h"
+#include "SDL.h"
+#include "Border.hpp"
 #include <cstdlib> 
 #include <iostream>
 
@@ -26,7 +27,12 @@ class Asteroide {
     std::vector<float> speed;
     SDL_Renderer *renderer;
     SDL_Texture *Texture_ast;
-    char* path;
+    Uint32 format;
+    int access;
+    int L;
+    int H;
+    int result;
+    char *path;
     SDL_Rect Box;
     SDL_Rect collisionRect;
     float angularSpeed; //vitesse de rotation

@@ -1,10 +1,13 @@
-#include "vaisseau.hpp"
-
+#include "../include/vaisseau.hpp"
+#include "../include/Bullet.hpp"
+#include<cstdio>
 const float PI = 3.14159265359f;
+const float ANGULARSPEED = 15;
 
-vaisseau::vaisseau(SDL_Renderer *renderer, std::string path) : angularSpeed(0.2f), accelerationFactor( 0.2f) , Game()
+vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
 {
 	SDL_Surface *rocket;
+	this->renderer = renderer;
 	rocket = SDL_LoadBMP(path);
 	if ( rocket == NULL ){
 		std::cout << " Load image rocket" << SDL_GetError() << std::endl;
@@ -12,6 +15,7 @@ vaisseau::vaisseau(SDL_Renderer *renderer, std::string path) : angularSpeed(0.2f
 	else {
 		SDL_SetColorKey(rocket, SDL_TRUE, SDL_MapRGB(rocket->format, 255, 255, 255));
         Texture_rocket = SDL_CreateTextureFromSurface(renderer, rocket);
+		
         if (Texture_rocket == NULL ){
             std::cout << "Problem texture rocket" << SDL_GetError() << std::endl;
         }
@@ -24,12 +28,23 @@ vaisseau::vaisseau(SDL_Renderer *renderer, std::string path) : angularSpeed(0.2f
 	SDL_FreeSurface(rocket);
 
 	// Position intiale du vaisseau
-	x = W_WIDTH/2 - (RenderRect.w)/2 ;
-	y = W_HEIGHT/2 - (RenderRect.h)/2 ;  
-	height = 100; // valeur au pif
-	width = 100;  // same
-	angle = 0f;
-	angularSpeed = 0f;
+	x = WIDTH_SCREEN/2 - (RenderRect.w)/2 ;
+	y = HEIGHT_SCREEN/2 - (RenderRect.h)/2 ;  
+
+	angle = 0;
+
+	SDL_QueryTexture(Texture_rocket, &format, &a, &width, &height);
+	
+	src.x = 0;
+	src.y = 0;
+	src.w = width ; 
+	src.h = height;
+
+	positionRocket.x = x ;
+	positionRocket.y = y ;
+	positionRocket.w = width ;
+	positionRocket.h = height ;
+  
 	credit = 3; // nombre de vies
     bulletCoolDown = 100; // en ms
 }
@@ -38,15 +53,16 @@ vaisseau::~vaisseau(){
 	SDL_DestroyTexture(Texture_rocket);
 }
 
+
 void vaisseau::ResetBulletCoolDown(){
-        lastBulletTime = 0;
+    lastBulletTime = 0;
 }
 
 void vaisseau::Reset(){
-	x = static_cast<float>(W_WIDTH) / 2;
-	y = static_cast<float>(W_HEIGHT) / 2;
+	x = static_cast<float>(WIDTH_SCREEN) / 2;
+	y = static_cast<float>(HEIGHT_SCREEN) / 2;
 	angle = 0;
-	velocityX = velocityY = 0;
+	vX = vY = 0;
 
 	// No bullets fired yet
 	lastBulletTime = 0;
@@ -55,16 +71,47 @@ void vaisseau::Reset(){
 }
 
 void vaisseau::Rotate( int direction){
-        angle += direction * angularSpeed ;  // direction = +1 ou -1 
+    angle += direction * ANGULARSPEED ;  // direction = +1 ou -1 
 }
 
-void vaisseau::moveLeft(){
-	x -= 20;
+void vaisseau::moveLeft(float angle){
+	//x -= 20;
+	positionRocket.x -= cos(PI * angle /180) + 20;
+
+	if( positionRocket.x < 0 || (positionRocket.x + RenderRect.w > WIDTH_SCREEN)){
+		positionRocket.x += cos(PI * angle /180) + 30;
+	}
+
 }
 
-void vaisseau::moveRight(){
-	x += 20;
+void vaisseau::moveRight(float angle){
+	//x += 20;
+	positionRocket.x += cos(PI * angle /180) + 20;
+
+	if( positionRocket.x < 0 || (positionRocket.x + RenderRect.w > WIDTH_SCREEN)){
+		positionRocket.x -= cos(PI * angle /180) + 30;
+	}
 }
+
+void vaisseau::moveUp(float angle){
+	//y -= 20;
+	positionRocket.y -= sin(PI * angle /180) + 20 ;
+
+	if( positionRocket.y < 0 || (positionRocket.y + RenderRect.h > HEIGHT_SCREEN)){
+		positionRocket.y += sin(PI * angle /180) + 30;
+	}
+
+}
+
+void vaisseau::moveDown(float angle){
+	//y += 20;
+	positionRocket.y += sin(PI * angle /180) + 20 ;
+
+	if( positionRocket.y < 0 || (positionRocket.y + RenderRect.h > HEIGHT_SCREEN)){
+		positionRocket.y -= sin(PI * angle /180) + 30;
+	}
+}
+
 
 void vaisseau::Acceleration(){
         // Create a normalized vector in the direction of travel
@@ -75,21 +122,25 @@ void vaisseau::Acceleration(){
 	vY -= yN * accelerationFactor;
 }
 
-Bullet *vaisseau::Fire()
+/*
+Bullet* vaisseau::Fire()
 {
-	if (GetTickCount() - lastBulletTime >= bulletCooldown){
+	
+	if (GetTickCount() - lastBulletTime >= bulletCoolDown){
 	        if (bulletUsed < maxBullets){
-		Bullet *bullet = new Bullet(renderer, *this, x, y, angle);
-		lastBulletTime = GetTickCount();
+		Bullet *bullet = new Bullet(renderer, x, y, angle);
+		lastBulletTime = 1; // = GetTickCount(); ??????
 		bulletUsed++;
 		return bullet;
 		}
 	}
+	
 	return NULL;
 }
+*/
 
 void vaisseau::EndFire(){
-        bulletUsed = max(bulletUsed - 1, 0);
+    bulletUsed = std::max(bulletUsed - 1, 0);
 }
 
 void vaisseau::Render(){
@@ -98,7 +149,7 @@ void vaisseau::Render(){
 	RenderRect.y = y;
 	RenderRect.h = height;
 	RenderRect.w = width;
-	SDL_RenderCopy(renderer, texture, NULL, &renderRect);
+	SDL_RenderCopy(renderer, texture, NULL, &RenderRect);
 
 	mainColliderRect.x = x + 25;
 	mainColliderRect.y = y;
@@ -121,14 +172,61 @@ void vaisseau::Render(){
 	SDL_RenderDrawRect(renderer, &mainColliderRect);
 	SDL_RenderDrawRect(renderer, &rightColliderRect);
 
-	SDL_Point center; // valeur ?
-    int A, L,H; // Où les déclarer ?
-    Uint32 format1; 
-    SDL_QueryTexture(Texture_rocket,&format1, &A, &L, &H);
-    SDL_Rect src = {0,0, H, L}; // valeur à modifier
-    SDL_Rect dest_ast = { W_WIDTH/2-L/2 , W_HEIGHT/2-H/2, H, L};
-    int result = SDL_RenderCopyEx(renderer, Texture_rocket, &src , &Box, angle, &center, SDL_FLIP_NONE);
-	if ( result != 0 ){
-        std::cout << "result " << SDL_GetError() << std::endl;
-    }
+}
+
+void vaisseau::Render2(void) {
+	SDL_RenderCopyEx(renderer, Texture_rocket, &src , &positionRocket, angle, NULL, SDL_FLIP_NONE);
+}
+
+void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
+	if( e.type == SDL_KEYDOWN ){
+		switch( e.key.keysym.sym){
+			case SDLK_ESCAPE : 
+				quit = 1;
+				break;
+			case SDLK_RIGHT :
+				vaisseau::Rotate(1);
+				vaisseau::moveRight(angle);
+				break;
+			case SDLK_LEFT :
+				vaisseau::Rotate(-1);
+				vaisseau::moveLeft(angle);
+				break;
+			case SDLK_UP :
+				vaisseau::Rotate(1);
+				vaisseau::moveUp(angle);
+				break;
+			case SDLK_DOWN :
+				vaisseau::Rotate(-1);
+				vaisseau::moveDown(angle);
+			break;
+		}
+	}
+	else if (e.type == SDL_KEYUP && e.key.repeat == 0){
+		switch( e.key.keysym.sym){
+			case SDLK_ESCAPE : 
+				quit = 1;
+				break;
+			case SDLK_RIGHT :
+				vaisseau::Rotate(1);
+				//vaisseau::moveRight(angle);
+				break;
+			case SDLK_LEFT :
+				vaisseau::Rotate(-1);
+				//vaisseau::moveLeft(angle);
+				break;
+			case SDLK_UP :
+				vaisseau::Rotate(1);
+				//vaisseau::moveUp(angle);
+				break;
+			case SDLK_DOWN :
+				vaisseau::Rotate(-1);
+				//vaisseau::moveDown(angle);
+			break;
+		}
+	}
+}
+
+void vaisseau::clean(){
+	SDL_DestroyTexture(Texture_rocket);
 }
