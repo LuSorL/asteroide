@@ -4,6 +4,7 @@
 const float PI = 3.14159265359f;
 const float ANGULARSPEED = 15;
 
+
 vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
 {
 	SDL_Surface *rocket;
@@ -72,46 +73,42 @@ void vaisseau::Reset(){
 
 void vaisseau::Rotate( int direction){
     angle += direction * ANGULARSPEED ;  // direction = +1 ou -1 
+	//angle = 360 % static_cast<int>(angle);
 }
 
-void vaisseau::moveLeft(float angle){
-	//x -= 20;
-	positionRocket.x -= cos(PI * angle /180) + 20;
-
-	if( positionRocket.x < 0 || (positionRocket.x + RenderRect.w > WIDTH_SCREEN)){
-		positionRocket.x += cos(PI * angle /180) + 30;
-	}
-
-}
-
-void vaisseau::moveRight(float angle){
-	//x += 20;
-	positionRocket.x += cos(PI * angle /180) + 20;
-
-	if( positionRocket.x < 0 || (positionRocket.x + RenderRect.w > WIDTH_SCREEN)){
-		positionRocket.x -= cos(PI * angle /180) + 30;
-	}
-}
 
 void vaisseau::moveUp(float angle){
-	//y -= 20;
-	positionRocket.y -= sin(PI * angle /180) + 20 ;
 
-	if( positionRocket.y < 0 || (positionRocket.y + RenderRect.h > HEIGHT_SCREEN)){
-		positionRocket.y += sin(PI * angle /180) + 30;
+	xN = cos(PI * angle /180)*30;
+	yN = sin(PI * angle /180)*30 ;
+
+	positionRocket.x += xN;
+	positionRocket.y += yN;
+
+	if( positionRocket.x < 0 || (positionRocket.x + RenderRect.w > WIDTH_SCREEN)){
+		positionRocket.x -= xN ;
 	}
 
+	if (positionRocket.y < 0 || (positionRocket.y + RenderRect.h > HEIGHT_SCREEN)){
+		positionRocket.y -= yN ;
+	}
 }
 
 void vaisseau::moveDown(float angle){
-	//y += 20;
-	positionRocket.y += sin(PI * angle /180) + 20 ;
+	xN = cos(PI * angle /180)*30 ;
+	yN = sin(PI * angle /180)*30 ;
 
-	if( positionRocket.y < 0 || (positionRocket.y + RenderRect.h > HEIGHT_SCREEN)){
-		positionRocket.y -= sin(PI * angle /180) + 30;
+	positionRocket.x += xN;
+	positionRocket.y += yN;
+
+	if( positionRocket.x < 0 || (positionRocket.x + RenderRect.w > WIDTH_SCREEN)){
+		positionRocket.x -= xN ;
+	}
+
+	if (positionRocket.y < 0 || (positionRocket.y + RenderRect.h > HEIGHT_SCREEN)){
+		positionRocket.y -= yN;
 	}
 }
-
 
 void vaisseau::Acceleration(){
         // Create a normalized vector in the direction of travel
@@ -186,19 +183,15 @@ void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
 				break;
 			case SDLK_RIGHT :
 				vaisseau::Rotate(1);
-				vaisseau::moveRight(angle);
 				break;
 			case SDLK_LEFT :
 				vaisseau::Rotate(-1);
-				vaisseau::moveLeft(angle);
 				break;
 			case SDLK_UP :
-				vaisseau::Rotate(1);
-				vaisseau::moveUp(angle);
+				moveUp(angle);
 				break;
 			case SDLK_DOWN :
-				vaisseau::Rotate(-1);
-				vaisseau::moveDown(angle);
+				moveDown(angle);
 			break;
 		}
 	}
@@ -209,19 +202,15 @@ void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
 				break;
 			case SDLK_RIGHT :
 				vaisseau::Rotate(1);
-				//vaisseau::moveRight(angle);
 				break;
 			case SDLK_LEFT :
 				vaisseau::Rotate(-1);
-				//vaisseau::moveLeft(angle);
 				break;
 			case SDLK_UP :
-				vaisseau::Rotate(1);
-				//vaisseau::moveUp(angle);
+				moveUp(angle);
 				break;
 			case SDLK_DOWN :
-				vaisseau::Rotate(-1);
-				//vaisseau::moveDown(angle);
+				moveDown(angle);
 			break;
 		}
 	}
