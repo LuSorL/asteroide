@@ -4,9 +4,10 @@ const float SIZE_AST = 70; // a changer
 
 Asteroide::Asteroide(SDL_Renderer *renderer, const char* path) 
 {
-    SDL_Point center = { 300, 300};
-    SDL_Texture *Texture_ast;
+    // SDL_Point center = { 300, 300};
+    // SDL_Texture *Texture_ast;
     SDL_Surface *asteroide;
+    this->renderer = renderer;
     asteroide = SDL_LoadBMP(path);
     if (asteroide == NULL ){
         std::cout << "Problem surface asteroide" << SDL_GetError() << std::endl;
@@ -26,28 +27,42 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     }
     SDL_FreeSurface(asteroide);
 
-    SDL_QueryTexture(Texture_ast,&format, &access, &L, &H);
-    SDL_Rect src = {0,0, H, L};
-    SDL_Rect dest_ast = { 900/2-L/2 , 900/2-H/2, H, L};
-    result = SDL_RenderCopyEx(renderer, Texture_ast, &src , &dest_ast, angle, &center, SDL_FLIP_NONE);
+    x = WIDTH_SCREEN/2 - (Box.w)/2 ;
+	y = HEIGHT_SCREEN/2 - (Box.h)/2 ;  
 
-    if ( result != 0 ){
-        cout << SDL_GetError() << endl;
-    }
-    SDL_RenderPresent(renderer);
-    position[0] = Asteroide::Random(0,800);
-    position[1] = Asteroide::Random(0,900);
+	angle = 0;
+
+    
+    SDL_QueryTexture(Texture_ast,&format, &access, &L, &H);
+
+    src.x = 0;
+	src.y = 0;
+	src.w = L; 
+	src.h = H;
+
+
+    dest_ast.x = WIDTH_SCREEN/2-L/2;
+    dest_ast.y = HEIGHT_SCREEN/2-H/2;
+    dest_ast.w = L;
+    dest_ast.h = H;
+
+  
+    position.x = x;
+    position.y = y;
+
+    // position[0] = Asteroide::Random(0,HEIGHT_SCREEN);
+    // position[1] = Asteroide::Random(0,WIDTH_SCREEN);
 
     //Box.w = SIZE_AST;
     //Box.h = Box.w;
     //Box.x = position[0];
     //Box.y = position[1] - Box.h
 
-    speed[0] = Asteroide::Random(0,100);
-    speed[1] = Asteroide::Random(0,100);
+    // speed[0] = Asteroide::Random(0,100);
+    // speed[1] = Asteroide::Random(0,100);
 
-    angle = Asteroide::Random(-2.0, 2.0); // A MODIFIER
-    angularSpeed = Asteroide::Random(-0.1,0.1); 
+    // angle = Asteroide::Random(-2.0, 2.0); // A MODIFIER
+    // angularSpeed = Asteroide::Random(-0.1,0.1); 
 
     dead = false ; 
     //size ; // = ?
@@ -61,13 +76,6 @@ bool Asteroide::IsDead(){
     return dead; 
 }
 
-void Asteroide::InitAsteroide(){
-    // début du jeu
-    speed[0] = Asteroide::Random(-0.1,200.0);
-    speed[1] = Asteroide::Random(-0.1,200.0);
-    angularSpeed = Asteroide::Random(-0.1,0.1); 
-    dead = false;
-}
 
 void Asteroide::UpdateAsteroide(){
     // pendant le jeu
@@ -120,17 +128,12 @@ void Asteroide::Render(){
     collisionRect.h = Box.h ;
     collisionRect.w =  Box.w; 
 
-    SDL_Point center; // valeur ?
-    int A, L,H; // Où les déclarer ?
-    Uint32 format1; 
-    SDL_QueryTexture(Texture_ast,&format1, &A, &L, &H);
-    SDL_Rect src = {0,0, H, L}; // valeur à modifier
-    SDL_Rect dest_ast = { 800/2-L/2 , 900/2-H/2, H, L};
-    int result = SDL_RenderCopyEx(renderer, Texture_ast, &src , &Box, angle, &center, SDL_FLIP_NONE);
-
-    if ( result != 0 ){
-        std::cout << SDL_GetError() << std::endl;
-    }
 
 
+}
+
+
+void Asteroide::Render2(void) {
+    SDL_RenderCopy(renderer, Texture_ast, NULL, &position);
+	//SDL_RenderCopyEx(renderer, Texture_ast, &src , &position, angle, NULL, SDL_FLIP_NONE);
 }

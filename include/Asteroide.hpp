@@ -15,20 +15,25 @@ class Asteroide {
     ~Asteroide();
     bool IsDead();
     float Random(float x,float y);
-    void InitAsteroide();
     void UpdateAsteroide();
     void RandomSprite();
     bool Collision();
     float GetSize();
     void Render();
+    void Render2(void);
+
 
     protected : //private ?
-    std::vector<float> position;
-    std::vector<float> speed;
+    SDL_Rect position;
+    SDL_Rect speed;
     SDL_Renderer *renderer;
     SDL_Texture *Texture_ast;
     Uint32 format;
     int access;
+    SDL_Rect src;
+    SDL_Rect dest_ast;
+    int width;
+    int height;
     int L;
     int H;
     int result;
@@ -39,4 +44,5 @@ class Asteroide {
     float angle;
     bool dead; 
     float size;
+    int x, y;
 };
