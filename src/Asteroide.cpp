@@ -45,6 +45,7 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     dest_ast.y = y;
     dest_ast.w = L;
     dest_ast.h = H;
+
     do {
         speed.x = RandomSpeed(-2, 2);
         speed.y = RandomSpeed(-2, 2);
@@ -82,6 +83,11 @@ void Asteroide::UpdateAsteroide(){
     // pendant le jeu
     dest_ast.x += speed.x;
     dest_ast.y += speed.y;
+
+    if (dest_ast.x <= 0 || dest_ast.x >= WIDTH_SCREEN || dest_ast.y <= 0|| dest_ast.y >= HEIGHT_SCREEN){
+        dest_ast.x = Random(0, WIDTH_SCREEN);
+        dest_ast.y = Random(0, HEIGHT_SCREEN);
+    }
 }
 
 // float Asteroide::GetSize(){
