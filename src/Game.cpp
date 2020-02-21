@@ -71,10 +71,26 @@ void Game::run(){
     int quit = 0;
     
     while( !quit ){
+
+        // déplacement astéroide
         for (int i = 0; i < NB_AST; i++)
         {
             asteroide[i]->UpdateAsteroide();
         }
+
+        //test collison ast / Vaisseau
+
+        for (int i = 0; i < NB_AST; i++)
+        {
+           if(asteroide[i]->Collision(rocket->Position())){
+            rocket->UpdateCredit(-1);
+            }
+            if(rocket->IsDead() == 0){
+                clean();
+            } 
+        }
+
+
         while(SDL_PollEvent(&e) ){
             if( e.type == SDL_QUIT){
                 quit = 1;

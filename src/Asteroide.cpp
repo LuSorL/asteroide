@@ -84,9 +84,33 @@ void Asteroide::UpdateAsteroide(){
     dest_ast.x += speed.x;
     dest_ast.y += speed.y;
 
-    if (dest_ast.x <= 0 || dest_ast.x >= WIDTH_SCREEN || dest_ast.y <= 0|| dest_ast.y >= HEIGHT_SCREEN){
-        dest_ast.x = Random(0, WIDTH_SCREEN);
-        dest_ast.y = Random(0, HEIGHT_SCREEN);
+    // if (dest_ast.x <= 0 || dest_ast.x >= WIDTH_SCREEN || dest_ast.y <= 0|| dest_ast.y >= HEIGHT_SCREEN){
+    //     dest_ast.x = Random(0, WIDTH_SCREEN);
+    //     dest_ast.y = Random(0, HEIGHT_SCREEN);
+    // }
+    if (dest_ast.x <= 0)
+    {
+        // dest_ast.x = Random(0, WIDTH_SCREEN);
+        // dest_ast.y = Random(0, HEIGHT_SCREEN);
+        dest_ast.x = dest_ast.x + WIDTH_SCREEN;
+    }
+    if (dest_ast.x >= WIDTH_SCREEN)
+    {
+        // dest_ast.x = Random(0, WIDTH_SCREEN);
+        // dest_ast.y = Random(0, HEIGHT_SCREEN);
+        dest_ast.x = dest_ast.x - WIDTH_SCREEN;
+    }
+    if (dest_ast.y >= HEIGHT_SCREEN)
+    {
+        // dest_ast.x = Random(0, WIDTH_SCREEN);
+        // dest_ast.y = Random(0, HEIGHT_SCREEN);
+        dest_ast.y = dest_ast.y - HEIGHT_SCREEN;
+    }
+    if (dest_ast.y <= 0)
+    {
+        // dest_ast.x = Random(0, WIDTH_SCREEN);
+        // dest_ast.y = Random(0, HEIGHT_SCREEN);
+        dest_ast.y = dest_ast.y + HEIGHT_SCREEN;
     }
 }
 
@@ -111,12 +135,12 @@ float Asteroide::RandomSpeed(float x, float y){
 }
 
 
-// bool Asteroide::Collision(){
-//     // SDL_HasIntersection(collisionRect, ? )
+bool Asteroide::Collision(SDL_Rect* positionRocket){
+    bool Bool = SDL_HasIntersection(&dest_ast, positionRocket);
 
-//     // return true;
+    return Bool;
     
-// }
+}
 
 
 void Asteroide::RandomSprite(){

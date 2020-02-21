@@ -45,8 +45,9 @@ vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
 	positionRocket.y = y ;
 	positionRocket.w = width ;
 	positionRocket.h = height ;
-  
-	credit = 3; // nombre de vies
+
+
+	credit = 1000;
     bulletCoolDown = 100; // en ms
 }
 
@@ -218,4 +219,17 @@ void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
 
 void vaisseau::clean(){
 	SDL_DestroyTexture(Texture_rocket);
+}
+
+int vaisseau::IsDead(){
+	return credit;
+}
+
+void vaisseau::UpdateCredit(int i){
+	credit += i;
+}
+
+SDL_Rect* vaisseau::Position(){
+	SDL_Rect* pos = &positionRocket;
+	return pos;
 }

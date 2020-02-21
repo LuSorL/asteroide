@@ -22,6 +22,9 @@ class vaisseau {
     void Render2(void);
     void moveUp(float angle);
     void moveDown(float angle);
+    int IsDead();
+    void UpdateCredit(int i);
+    SDL_Rect* Position();
     
     protected :
     int vX; // vitesse du vaisseau
