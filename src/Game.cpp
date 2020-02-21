@@ -86,7 +86,7 @@ void Game::run(){
             rocket->UpdateCredit(-1);
             }
             if(rocket->IsDead() == 0){
-                clean();
+                quit = 1;
             } 
         }
 

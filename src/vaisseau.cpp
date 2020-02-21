@@ -226,7 +226,9 @@ int vaisseau::IsDead(){
 }
 
 void vaisseau::UpdateCredit(int i){
+	std::cout << credit << std::endl;
 	credit += i;
+	std::cout << credit << std::endl;
 }
 
 SDL_Rect* vaisseau::Position(){
