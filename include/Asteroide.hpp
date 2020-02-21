@@ -15,6 +15,7 @@ class Asteroide {
     ~Asteroide();
     bool IsDead();
     float Random(float x,float y);
+    float RandomSpeed(float x,float y);
     void UpdateAsteroide();
     void RandomSprite();
     bool Collision();

@@ -45,9 +45,11 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     dest_ast.y = y;
     dest_ast.w = L;
     dest_ast.h = H;
-
-    speed.x = Random(-2, 2);
-    speed.y = Random(-2, 2);
+    do {
+        speed.x = RandomSpeed(-2, 2);
+        speed.y = RandomSpeed(-2, 2);
+    }while (speed.x == 0 && speed.y == 0);
+    
 
     // position[0] = Asteroide::Random(0,HEIGHT_SCREEN);
     // position[1] = Asteroide::Random(0,WIDTH_SCREEN);
@@ -71,9 +73,9 @@ Asteroide::~Asteroide(){
     SDL_DestroyTexture(Texture_ast);
 }
 
-bool Asteroide::IsDead(){
-    return dead; 
-}
+// bool Asteroide::IsDead(){
+//     // return dead; 
+// }
 
 
 void Asteroide::UpdateAsteroide(){
@@ -82,26 +84,33 @@ void Asteroide::UpdateAsteroide(){
     dest_ast.y += speed.y;
 }
 
-float Asteroide::GetSize(){
-    return size;
-}
+// float Asteroide::GetSize(){
+//     // return size;
+// }
 
 float Asteroide::Random(float x, float y){
     // fonction rendant un chiffre entre x et y
     if (x < y ){
-        return ((float)rand() / (float)(RAND_MAX)) * (y-x) + x +1;
+       return ((float)rand() / (float)(RAND_MAX)) * (y-x) + x;
     }
     else{
-        return ((float)rand() / (float)(RAND_MAX)) * (x-y) + y + 1;
+        return ((float)rand() / (float)(RAND_MAX)) * (x-y) + y;
     }
 }
 
-bool Asteroide::Collision(){
-    // SDL_HasIntersection(collisionRect, ? )
-
-    return true;
-    
+float Asteroide::RandomSpeed(float x, float y){
+    // fonction rendant un chiffre entre x et y
+    return ((float)rand() / (float)(RAND_MAX)) * (x - y) + y;
+    // return 1;
 }
+
+
+// bool Asteroide::Collision(){
+//     // SDL_HasIntersection(collisionRect, ? )
+
+//     // return true;
+    
+// }
 
 
 void Asteroide::RandomSprite(){
