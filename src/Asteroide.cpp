@@ -90,26 +90,18 @@ void Asteroide::UpdateAsteroide(){
     // }
     if (dest_ast.x <= 0)
     {
-        // dest_ast.x = Random(0, WIDTH_SCREEN);
-        // dest_ast.y = Random(0, HEIGHT_SCREEN);
         dest_ast.x = dest_ast.x + WIDTH_SCREEN;
     }
     if (dest_ast.x >= WIDTH_SCREEN)
     {
-        // dest_ast.x = Random(0, WIDTH_SCREEN);
-        // dest_ast.y = Random(0, HEIGHT_SCREEN);
         dest_ast.x = dest_ast.x - WIDTH_SCREEN;
     }
     if (dest_ast.y >= HEIGHT_SCREEN)
     {
-        // dest_ast.x = Random(0, WIDTH_SCREEN);
-        // dest_ast.y = Random(0, HEIGHT_SCREEN);
         dest_ast.y = dest_ast.y - HEIGHT_SCREEN;
     }
     if (dest_ast.y <= 0)
     {
-        // dest_ast.x = Random(0, WIDTH_SCREEN);
-        // dest_ast.y = Random(0, HEIGHT_SCREEN);
         dest_ast.y = dest_ast.y + HEIGHT_SCREEN;
     }
 }
