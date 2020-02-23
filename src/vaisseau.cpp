@@ -1,8 +1,6 @@
 #include "../include/vaisseau.hpp"
 #include "../include/Bullet.hpp"
 #include<cstdio>
-const float PI = 3.14159265359f;
-const float ANGULARSPEED = 15;
 
 
 vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
@@ -45,13 +43,19 @@ vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
 	positionRocket.y = y ;
 	positionRocket.w = width ;
 	positionRocket.h = height ;
-
-
-	credit = 10;
+  
+	credit = 3; // nombre de vies
     bulletCoolDown = 100; // en ms
 }
 
 vaisseau::~vaisseau(){
+	for(int i = 0; i < NB_MIS; ++i)
+	{
+		if(missile[i])
+			delete missile[i];
+	}
+
+	//missile.clear();
 	SDL_DestroyTexture(Texture_rocket);
 }
 
@@ -120,26 +124,7 @@ void vaisseau::Acceleration(){
 	vY -= yN * accelerationFactor;
 }
 
-/*
-Bullet* vaisseau::Fire()
-{
-	
-	if (GetTickCount() - lastBulletTime >= bulletCoolDown){
-	        if (bulletUsed < maxBullets){
-		Bullet *bullet = new Bullet(renderer, x, y, angle);
-		lastBulletTime = 1; // = GetTickCount(); ??????
-		bulletUsed++;
-		return bullet;
-		}
-	}
-	
-	return NULL;
-}
-*/
 
-void vaisseau::EndFire(){
-    bulletUsed = std::max(bulletUsed - 1, 0);
-}
 
 void vaisseau::Render(){
 
@@ -172,6 +157,17 @@ void vaisseau::Render(){
 
 }
 
+
+/*
+void vaisseau::Draw(){
+	Bullet* temp = Missile(bulletUsed);
+	float x_t = temp->Position()->x;
+	float y_t = temp->Position()->y;
+	temp->Draw(x_t,y_t,angle);
+	//std::cout << "Succes" << std::endl;
+}
+*/
+
 void vaisseau::Render2(void) {
 	SDL_RenderCopyEx(renderer, Texture_rocket, &src , &positionRocket, angle, NULL, SDL_FLIP_NONE);
 }
@@ -191,8 +187,13 @@ void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
 			case SDLK_UP :
 				moveUp(angle);
 				break;
+				/*
 			case SDLK_DOWN :
 				moveDown(angle);
+			break;
+			*/
+			case SDLK_SPACE :
+				Compte();
 			break;
 		}
 	}
@@ -210,11 +211,17 @@ void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
 			case SDLK_UP :
 				moveUp(angle);
 				break;
+				/*
 			case SDLK_DOWN :
 				moveDown(angle);
 			break;
+			*/
 		}
 	}
+}
+
+float vaisseau::getAngle(){
+	return angle;
 }
 
 void vaisseau::clean(){
@@ -239,3 +246,72 @@ SDL_Rect* vaisseau::Position(){
 	SDL_Rect* pos = &positionRocket;
 	return pos;
 }
+
+
+
+/*------------------------- BULLET ----------------------------*/ 
+
+void vaisseau::Update_bullet(){
+
+	for(int i = 0; i < NB_MIS; ++i) {
+		if(missile[i]) {
+			if( (missile[i]->Position()->x < 0) || (missile[i]->Position()->y < 0) ||
+			   (missile[i]->Position()->x > WIDTH_SCREEN) || (missile[i]->Position()->y > HEIGHT_SCREEN))
+			{
+				delete missile[i];
+				//missile.erase(missile.begin() + i);
+				--i;
+			} else
+				missile[i]->Position()->x += SPEED;
+				missile[i]->Position()->y += SPEED;
+				
+		}
+	}
+}
+
+int vaisseau::Compte(){
+	if (bulletUsed < NB_MIS){
+		bulletUsed++;
+	}
+	else{
+		bulletUsed = 0;
+		Fire();
+		Update_bullet();
+	}
+	return bulletUsed;
+}
+
+
+Bullet* vaisseau::Missile(int i){
+	return missile[i];
+}
+
+void vaisseau::EndFire(){
+    bulletUsed = std::max(bulletUsed - 1, 0);
+}
+
+void vaisseau::Fire()
+{
+	bulletUsed = 0;
+	for(int i = 0; i < NB_MIS; ++i) {
+		//if(missile[i])
+		missile[i] = new Bullet(renderer,"./src/laser.bmp", positionRocket.x, positionRocket.y, angle);
+	}
+ 	/*
+	if (bulletUsed < MAX_BULLETS){
+		
+		bullet = new Bullet(renderer,"./src/laser.bmp", positionRocket.x, positionRocket.y, angle);
+		//std::cout << bullet->Position()->x << std::endl;
+		//lastBulletTime = 1; // = GetTickCount(); ??????
+		bulletUsed++;
+		return bullet;
+	}
+	*/
+	/*
+	if (GetTickCount() - lastBulletTime >= bulletCoolDown){
+	    
+	}
+	*/
+	//return NULL;
+}
+
