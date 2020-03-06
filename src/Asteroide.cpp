@@ -55,10 +55,10 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     // position[0] = Asteroide::Random(0,HEIGHT_SCREEN);
     // position[1] = Asteroide::Random(0,WIDTH_SCREEN);
 
-    //Box.w = SIZE_AST;
-    //Box.h = Box.w;
-    //Box.x = position[0];
-    //Box.y = position[1] - Box.h
+    // Box.w = SIZE_AST;
+    // Box.h = Box.w;
+    // Box.x = dest_ast.x;
+    // Box.y = dest_ast.y - Box.h;
 
     // speed[0] = Asteroide::Random(0,100);
     // speed[1] = Asteroide::Random(0,100);
@@ -128,10 +128,49 @@ float Asteroide::RandomSpeed(float x, float y){
 
 
 bool Asteroide::Collision(SDL_Rect* positionRocket){
+
+    // int left_ast, left_rocket;
+    // int right_ast, right_rocket;
+    // int top_ast, top_rocket;
+    // int bottom_ast, bottom_rocket;
+
+    // left_ast = dest_ast.x;
+    // right_ast = dest_ast.x + dest_ast.w;
+    // top_ast = dest_ast.y;
+    // bottom_ast = dest_ast.y + dest_ast.h;
+
+
+    // left_rocket = positionRocket->x;
+    // right_rocket = positionRocket->x + positionRocket->w;
+    // top_rocket = positionRocket->y;
+    // bottom_rocket = positionRocket->y + positionRocket->h;
+
     bool Bool = SDL_HasIntersection(&dest_ast, positionRocket);
 
     return Bool;
-    
+
+    // if (bottom_ast <= top_rocket)
+    // {
+    //     return false;
+    // }
+
+    // if (top_ast >= bottom_rocket)
+    // {
+    //     return false;
+    // }
+
+    // if (right_ast <= left_rocket)
+    // {
+    //     return false;
+    // }
+
+    // if (left_ast >= right_rocket)
+    // {
+    //     return false;
+    // }
+
+    // //Si conditions collision detectee
+    // return true;
 }
 
 
@@ -152,17 +191,17 @@ void Asteroide::RandomSprite(){
     */
 }
 
-void Asteroide::Render(){
-    // A MODIFIER
+// void Asteroide::Render(){
+//     // A MODIFIER
         
-    collisionRect.x = Box.x ; // + qqch ?
-    collisionRect.y = Box.y ; // +qqch ?
-    collisionRect.h = Box.h ;
-    collisionRect.w =  Box.w; 
+//     collisionRect.x = Box.x ; // + qqch ?
+//     collisionRect.y = Box.y ; // +qqch ?
+//     collisionRect.h = Box.h ;
+//     collisionRect.w =  Box.w; 
 
 
 
-}
+// }
 
 
 void Asteroide::Render2(void) {
