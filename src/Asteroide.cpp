@@ -53,10 +53,10 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     // position[0] = Asteroide::Random(0,HEIGHT_SCREEN);
     // position[1] = Asteroide::Random(0,WIDTH_SCREEN);
 
-    // Box.w = SIZE_AST;
-    // Box.h = Box.w;
-    // Box.x = dest_ast.x;
-    // Box.y = dest_ast.y - Box.h;
+    Box.w = SIZE_AST;
+    Box.h = Box.w;
+    Box.x = 1;
+    Box.y = 1;
 
     // speed[0] = Asteroide::Random(0,100);
     // speed[1] = Asteroide::Random(0,100);
@@ -123,7 +123,7 @@ void Asteroide::UpdateAsteroide(){
     }
 }
 
-/*
+
 bool Asteroide::Collision(SDL_Rect* positionRocket){
 
     // int left_ast, left_rocket;
@@ -143,6 +143,17 @@ bool Asteroide::Collision(SDL_Rect* positionRocket){
     // bottom_rocket = positionRocket->y + positionRocket->h;
 
     bool Bool = SDL_HasIntersection(&dest_ast, positionRocket);
+
+    if(Bool){
+        if (speed.x > 0){
+            dest_ast.y = HEIGHT_SCREEN/2;
+            dest_ast.x = 0;
+        }
+        else {
+            dest_ast.y = HEIGHT_SCREEN / 2;
+            dest_ast.x = WIDTH_SCREEN;
+        }
+    }
 
     return Bool;
 
@@ -169,7 +180,7 @@ bool Asteroide::Collision(SDL_Rect* positionRocket){
     // //Si conditions collision detectee
     // return true;
 }
-*/
+
 
 void Asteroide::RandomSprite(){
     /*

@@ -9,7 +9,7 @@
 #include "vaisseau.hpp"
 #include "Asteroide.hpp"
 
-#define NB_AST 30
+#define NB_AST 10
 
 
 using namespace std;

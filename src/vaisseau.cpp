@@ -44,7 +44,7 @@ vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
 	positionRocket.w = width ;
 	positionRocket.h = height ;
   
-	credit = 3; // nombre de vies
+	credit = 100; // nombre de vies
     bulletCoolDown = 100; // en ms
 }
 

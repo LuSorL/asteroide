@@ -76,7 +76,7 @@ void Game::run(){
         for (int i = 0; i < NB_AST; i++)
         {
             asteroide[i]->UpdateAsteroide();
-            /*
+            
             if (asteroide[i]->Collision(rocket->Position()))
             {
                 rocket->UpdateCredit(-1);
@@ -84,7 +84,7 @@ void Game::run(){
             if (rocket->IsDead())
             {
                 quit = 1;
-            }*/
+            }
         }
 
         while(SDL_PollEvent(&e) ){

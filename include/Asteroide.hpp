@@ -17,7 +17,7 @@ class Asteroide {
     float Random(float x,float y);
     void UpdateAsteroide();
     void RandomSprite();
-    //bool Collision(SDL_Rect* positionRocket);
+    bool Collision(SDL_Rect* positionRocket);
     float GetSize();
     void Render();
     void Render2(void);
