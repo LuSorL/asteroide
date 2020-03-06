@@ -15,16 +15,13 @@ class Asteroide {
     ~Asteroide();
     bool IsDead();
     float Random(float x,float y);
-    float RandomSpeed(float x,float y);
     void UpdateAsteroide();
     void RandomSprite();
-    bool Collision(SDL_Rect* positionRocket);
+    //bool Collision(SDL_Rect* positionRocket);
     float GetSize();
     void Render();
     void Render2(void);
     void clean();
-
-
 
     protected : //private ?
     SDL_Rect speed;

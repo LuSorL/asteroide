@@ -4,28 +4,40 @@
 #include "./SDL2_rotozoom.h"
 #include "Border.hpp"
 #include <iostream>
-//#include "Bullet.hpp"
+#include "Bullet.hpp"
+
+#define NB_MIS 10
+
+const float ANGULARSPEED = 15;
+const int MAX_BULLETS = 100;
+const float SPEED = 50;
 
 class vaisseau {
     public : 
     vaisseau(SDL_Renderer *renderer, const char* path);
     ~vaisseau();
     void Reset(); //Reset Game
-    void Rotate(int direction); // rotation du vaisseau
+    void Rotate(int direction); // rotation du vaisseauc
     void clean();
     void ResetBulletCoolDown();
     void handleEvent(SDL_Event &e,SDL_Texture* texture, SDL_Rect &dest);
     void Acceleration();
-    //Bullet* Fire();
+    void Fire();
+    Bullet* Missile(int i );
     void EndFire();
     void Render();
     void Render2(void);
     void moveUp(float angle);
     void moveDown(float angle);
-    bool IsDead();
-    void UpdateCredit(int i);
+    float getAngle();
     SDL_Rect* Position();
-    
+    void UpdateCredit(int i);
+    bool IsDead();
+    void Update_bullet();
+    int Compte();
+    void Render_bullet();
+    //void Draw();
+
     protected :
     int vX; // vitesse du vaisseau
     int vY;
@@ -51,11 +63,13 @@ class vaisseau {
     SDL_Rect rightColliderRect;
     SDL_Texture *Texture_rocket;
     SDL_Texture* texture;
+    //Bullet *bullet;
+    Bullet* missile[NB_MIS];
     float accelerationFactor;
     int credit; // Vie
     int bulletCoolDown;
     int lastBulletTime ; 
-    int maxBullet;
+    int compteur;
     int bulletUsed; 
 
 };

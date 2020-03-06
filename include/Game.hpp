@@ -5,11 +5,11 @@
 #include <iostream>
 #include "Border.hpp"
 #include "Texture.hpp"
-//#include "Bullet.hpp"
+#include "Bullet.hpp"
 #include "vaisseau.hpp"
 #include "Asteroide.hpp"
 
-#define NB_AST 15
+#define NB_AST 30
 
 
 using namespace std;
@@ -37,6 +37,6 @@ class Game{
     int hauteur;
     vaisseau* rocket;
     Asteroide* asteroide[NB_AST];
-    //Bullet bullet;
+    Bullet* missile;
 };
 #endif

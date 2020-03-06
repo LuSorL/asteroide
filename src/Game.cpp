@@ -76,6 +76,7 @@ void Game::run(){
         for (int i = 0; i < NB_AST; i++)
         {
             asteroide[i]->UpdateAsteroide();
+            /*
             if (asteroide[i]->Collision(rocket->Position()))
             {
                 rocket->UpdateCredit(-1);
@@ -83,17 +84,16 @@ void Game::run(){
             if (rocket->IsDead())
             {
                 quit = 1;
-            }
+            }*/
         }
 
-    
         while(SDL_PollEvent(&e) ){
             if( e.type == SDL_QUIT){
                 quit = 1;
             }
-                rocket->handleEvent(e,texture,dest);
-                
+            rocket->handleEvent(e,texture,dest);
         }
+
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer,texture,NULL,&dest);
         rocket->Render2();
@@ -101,17 +101,20 @@ void Game::run(){
         {
             asteroide[i]->Render2();
         }
+
         SDL_RenderPresent(renderer);
     }
     
 }
 
 void Game::newGame(){
-    for (int i=0; i<NB_AST; i++){
+    for (int i=0; i< NB_AST; i++){
         asteroide[i] = new Asteroide(renderer, "./src/asteroide1.bmp");
     }
     rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
-    //bullet* missile = Bullet(renderer, 400,500,0);
+    rocket->Fire();
+    //std::cout << "Succes" << std::endl;
+    rocket->Update_bullet();
 }
 
 void Game::Update(){

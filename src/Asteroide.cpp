@@ -4,8 +4,6 @@ const float SIZE_AST = 70; // a changer
 
 Asteroide::Asteroide(SDL_Renderer *renderer, const char* path) 
 {
-    // SDL_Point center = { 300, 300};
-    // SDL_Texture *Texture_ast;
     SDL_Surface *asteroide;
     this->renderer = renderer;
     asteroide = SDL_LoadBMP(path);
@@ -47,8 +45,8 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     dest_ast.h = H;
 
     do {
-        speed.x = RandomSpeed(-2, 2);
-        speed.y = RandomSpeed(-2, 2);
+        speed.x = Random(-2, 2);
+        speed.y = Random(-2, 2);
     }while (speed.x == 0 && speed.y == 0);
     
 
@@ -67,18 +65,37 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
     // angularSpeed = Asteroide::Random(-0.1,0.1); 
 
     dead = false ; 
-    //size ; // = ?
 }
 
 Asteroide::~Asteroide(){
     SDL_DestroyTexture(Texture_ast);
 }
 
-// bool Asteroide::IsDead(){
-//     // return dead; 
-// }
+bool Asteroide::IsDead(){
+    return dead; 
+}
 
 
+float Asteroide::GetSize(){
+    return size;
+}
+
+float Asteroide::Random(float x, float y){
+    // fonction rendant un chiffre entre x et y
+    if (x < y ){
+        return ((float)rand() / (float)(RAND_MAX)) * (y-x) + x;
+    }
+    else{
+        return ((float)rand() / (float)(RAND_MAX)) * (x-y) + y;
+    }
+}
+/*
+float Asteroide::RandomSpeed(float x, float y){
+    // fonction rendant un chiffre entre x et y
+    return ((float)rand() / (float)(RAND_MAX)) * (x - y) + y;
+    // return 1;
+}
+*/
 void Asteroide::UpdateAsteroide(){
     // pendant le jeu
     dest_ast.x += speed.x;
@@ -106,27 +123,7 @@ void Asteroide::UpdateAsteroide(){
     }
 }
 
-// float Asteroide::GetSize(){
-//     // return size;
-// }
-
-float Asteroide::Random(float x, float y){
-    // fonction rendant un chiffre entre x et y
-    if (x < y ){
-       return ((float)rand() / (float)(RAND_MAX)) * (y-x) + x;
-    }
-    else{
-        return ((float)rand() / (float)(RAND_MAX)) * (x-y) + y;
-    }
-}
-
-float Asteroide::RandomSpeed(float x, float y){
-    // fonction rendant un chiffre entre x et y
-    return ((float)rand() / (float)(RAND_MAX)) * (x - y) + y;
-    // return 1;
-}
-
-
+/*
 bool Asteroide::Collision(SDL_Rect* positionRocket){
 
     // int left_ast, left_rocket;
@@ -172,7 +169,7 @@ bool Asteroide::Collision(SDL_Rect* positionRocket){
     // //Si conditions collision detectee
     // return true;
 }
-
+*/
 
 void Asteroide::RandomSprite(){
     /*
@@ -206,7 +203,6 @@ void Asteroide::RandomSprite(){
 
 void Asteroide::Render2(void) {
     SDL_RenderCopy(renderer, Texture_ast, NULL, &dest_ast);
-	//SDL_RenderCopyEx(renderer, Texture_ast, &src , &position, angle, NULL, SDL_FLIP_NONE);
 }
 
 void Asteroide::clean(){
