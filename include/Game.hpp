@@ -21,7 +21,6 @@ class Game{
     int initialization();
     void newGame();
     void clean();
-    void Update();
     void run();
     void handleEvent(SDL_Event e);
 
@@ -37,6 +36,6 @@ class Game{
     int hauteur;
     vaisseau* rocket;
     Asteroide* asteroide[NB_AST];
-    Bullet* missile;
 };
+
 #endif

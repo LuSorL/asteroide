@@ -4,6 +4,7 @@
 #include "Border.hpp"
 #include <iostream>
 #include "SDL_image.h"
+#include <vector>
 
 class Bullet {
     public : 
@@ -11,11 +12,12 @@ class Bullet {
     Bullet( SDL_Renderer *renderer ,const char* path, float vaisseauX, float vaisseauY, float angleV);
     void Render2(float posX, float posY);
     void clean();
-    bool Remove();
     void handleEvent(SDL_Event &e, float angle);
     void move(float angle);
     SDL_Rect* Position();
-    //void Draw(float x, float y, float angle);
+    SDL_Texture* Texture();
+    bool Collision(SDL_Rect* positionAst);
+
 
     protected : 
     SDL_Renderer *renderer;
@@ -33,8 +35,8 @@ class Bullet {
     int speed;
     float angle;
     float angularSpeed;
-    int apparitionTime ; // durée d'apparition en ms 
     int createdNow;  // instant t de création de la balle
+
 
 };
 

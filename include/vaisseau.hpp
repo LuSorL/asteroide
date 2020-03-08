@@ -5,38 +5,37 @@
 #include "Border.hpp"
 #include <iostream>
 #include "Bullet.hpp"
+#include <vector>
 
-#define NB_MIS 10
+#define NB_MIS 1000
 
 const float ANGULARSPEED = 15;
 const int MAX_BULLETS = 100;
-const float SPEED = 50;
+const float SPEED = 30;
 
 class vaisseau {
     public : 
+    /*VAISSEAU*/
     vaisseau(SDL_Renderer *renderer, const char* path);
     ~vaisseau();
     void Reset(); //Reset Game
     void Rotate(int direction); // rotation du vaisseauc
-    void clean();
-    void ResetBulletCoolDown();
     void handleEvent(SDL_Event &e,SDL_Texture* texture, SDL_Rect &dest);
-    void Acceleration();
-    void Fire();
-    Bullet* Missile(int i );
-    void EndFire();
-    void Render();
     void Render2(void);
     void moveUp(float angle);
-    void moveDown(float angle);
     float getAngle();
     SDL_Rect* Position();
     void UpdateCredit(int i);
+    void UpdateScore();
     bool IsDead();
+    void clean();
+
+    /* BULLET */
     void Update_bullet();
-    int Compte();
     void Render_bullet();
-    //void Draw();
+    int MissileSize();
+    Bullet* Missile(int i);
+    Bullet* Fire();
 
     protected :
     int vX; // vitesse du vaisseau
@@ -56,21 +55,17 @@ class vaisseau {
     SDL_Point center;
     SDL_Rect src;
     SDL_Renderer *renderer;
-    SDL_Rect Box;
     SDL_Rect RenderRect;
-    SDL_Rect mainColliderRect;
-    SDL_Rect leftColliderRect;
-    SDL_Rect rightColliderRect;
     SDL_Texture *Texture_rocket;
+
     SDL_Texture* texture;
-    //Bullet *bullet;
-    Bullet* missile[NB_MIS];
+    Bullet *bullet;
+    Bullet *newBullet;
     float accelerationFactor;
     int credit; // Vie
-    int bulletCoolDown;
-    int lastBulletTime ; 
-    int compteur;
     int bulletUsed; 
+    std::vector<Bullet*> missile;
+    int score;
 
 };
 

@@ -22,6 +22,7 @@ class Asteroide {
     void Render();
     void Render2(void);
     void clean();
+    SDL_Rect* Position();
 
     protected : //private ?
     SDL_Rect speed;
