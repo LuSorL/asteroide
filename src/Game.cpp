@@ -2,9 +2,8 @@
 
 
 
-Game::Game() //: window(0), renderer(0) , Asteroide(renderer, "./src/asteroide1.bmp"), vaisseau(renderer, "./src/vaisseauR.bmp"), bullet(renderer, 400,500,0)
- {
-    // constructeur 
+Game::Game(){
+
 }
 
 Game::~Game(){
@@ -85,7 +84,16 @@ void Game::run(){
             {
                 quit = 1;
             }
+
+            for ( int j = 0; j < rocket->MissileSize() ; j++){
+                if ( rocket->Missile(j)->Collision( asteroide[i]->Position() )){
+                    rocket->UpdateScore(); // à modifier fonctionne pas correctement
+                    asteroide[i]->clean();
+                    rocket->Missile(j)->clean();
+                }
+            }
         }
+
 
         while(SDL_PollEvent(&e) ){
             if( e.type == SDL_QUIT){
@@ -96,7 +104,10 @@ void Game::run(){
 
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer,texture,NULL,&dest);
+
         rocket->Render2();
+        rocket->Update_bullet();
+        rocket->Render_bullet();
         for (int i = 0; i < NB_AST; i++)
         {
             asteroide[i]->Render2();
@@ -112,16 +123,7 @@ void Game::newGame(){
         asteroide[i] = new Asteroide(renderer, "./src/asteroide1.bmp");
     }
     rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
-    rocket->Fire();
-    //std::cout << "Succes" << std::endl;
-    rocket->Update_bullet();
-}
 
-void Game::Update(){
-    //elete vaisseau;
-    //delete texture;
-    //vaisseau = new class vaisseau( renderer, "vaisseau.bmp");
-    //texture = new Texture( renderer );
 }
 
 void Game::handleEvent(SDL_Event e){

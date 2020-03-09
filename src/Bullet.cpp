@@ -42,21 +42,6 @@ Bullet::Bullet( SDL_Renderer *renderer, const char* path, float vaisseauX, float
     dest_bullet.h = H;
     
     angle = 0;
-    //angularSpeed = 0;
-
-    //createdNow = GetTickCount();
-    apparitionTime = 1000; 
-}
-
-bool Bullet::Remove()
-{
-    /*
-    if ( GetTickCount() - createdNow >= apparitionTime){
-        return true;
-    }
-    */
-	return false;
-    
 }
 
 void Bullet::Render2(float posX, float posY) {
@@ -78,44 +63,23 @@ void Bullet::move(float angle){
     
 }
 
-/*
-void Bullet::Draw(float x, float y , float angle){
-    SDL_SetRenderDrawColor( renderer, 0x00, 0x00, 0xFF, 0xFF );		
-	SDL_RenderDrawLine( renderer, x, y , cos(PI * angle /180)*10 , sin(PI * angle /180)*10);
-}
-*/
-
 SDL_Rect* Bullet::Position(){
     SDL_Rect* pos = &dest_bullet;
     return pos;
 }
 
-/*
-void Bullet::handleEvent(SDL_Event &e, float angle){
-    if( e.type == SDL_KEYDOWN ){
-		switch( e.key.keysym.sym){
-			case SDLK_ESCAPE : 
-				quit = 1;
-				break;
-            case SDLK_SPACE :
-                move(angle);
-                break;
-
-		}
-	}
-	else if (e.type == SDL_KEYUP && e.key.repeat == 0){
-		switch( e.key.keysym.sym){
-			case SDLK_ESCAPE : 
-				quit = 1;
-				break;
-            case SDLK_SPACE :
-                move(angle);
-                break;
-
-		}
-	}
+SDL_Texture* Bullet::Texture(){
+    return Texture_bullet;
 }
-*/
+
+bool Bullet::Collision(SDL_Rect* positionAst){
+
+    bool Bool = SDL_HasIntersection(&dest_bullet, positionAst);
+
+    return Bool;
+    
+}
+
 Bullet::~Bullet()
 {
 	//vaisseau.EndFire();
