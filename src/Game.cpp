@@ -2,9 +2,7 @@
 
 
 
-Game::Game(){
-
-}
+Game::Game(){}
 
 Game::~Game(){
     window = NULL;
@@ -21,11 +19,11 @@ int Game::initialization(){
     }
 
     window = SDL_CreateWindow(
-        "Game",                            // window title
-        SDL_WINDOWPOS_UNDEFINED,                                // initial x position
-        SDL_WINDOWPOS_UNDEFINED,                                  // initial y position
-        WIDTH_SCREEN,                               // width, in pixels
-        HEIGHT_SCREEN,                               // height, in pixels
+        "Game",                         
+        SDL_WINDOWPOS_UNDEFINED,           
+        SDL_WINDOWPOS_UNDEFINED,                                 
+        WIDTH_SCREEN,                               
+        HEIGHT_SCREEN,                              
         SDL_WINDOW_SHOWN                  
     );
 
@@ -67,16 +65,17 @@ int Game::initialization(){
 }
 
 void Game::run(){
-    int quit = 0;
-    
+
+    quit = 0 ;
+
     while( !quit ){
 
         // déplacement astéroide & tests collisions
-        for (int i = 0; i < NB_AST; i++)
+        for (int i = 0; i < asteroides.size(); i++)
         {
-            asteroide[i]->UpdateAsteroide();
+            asteroides[i]->UpdateAsteroide();
             
-            if (asteroide[i]->Collision(rocket->Position()))
+            if (asteroides[i]->Collision(rocket->Position()))
             {
                 rocket->UpdateCredit(-1);
             }
@@ -86,14 +85,21 @@ void Game::run(){
             }
 
             for ( int j = 0; j < rocket->MissileSize() ; j++){
-                if ( rocket->Missile(j)->Collision( asteroide[i]->Position() )){
-                    rocket->UpdateScore(); // à modifier fonctionne pas correctement
-                    asteroide[i]->clean();
+                if ( rocket->Missile(j)->Collision( asteroides[i]->Position() )){
+                    rocket->UpdateScore(); 
+
+                    asteroides[i]->clean();
+                    asteroides.erase(asteroides.begin() + i);
+                    newAst++;
                     rocket->Missile(j)->clean();
                 }
             }
-        }
 
+            if ( newAst != 0 ){
+                CreateNewAsteroide();
+                newAst--;
+            }
+        }
 
         while(SDL_PollEvent(&e) ){
             if( e.type == SDL_QUIT){
@@ -108,9 +114,10 @@ void Game::run(){
         rocket->Render2();
         rocket->Update_bullet();
         rocket->Render_bullet();
-        for (int i = 0; i < NB_AST; i++)
+
+        for (int i = 0; i < asteroides.size(); i++)
         {
-            asteroide[i]->Render2();
+            asteroides[i]->Render();
         }
 
         SDL_RenderPresent(renderer);
@@ -119,27 +126,44 @@ void Game::run(){
 }
 
 void Game::newGame(){
-    for (int i=0; i< NB_AST; i++){
-        asteroide[i] = new Asteroide(renderer, "./src/asteroide1.bmp");
+
+    newAst = 0;
+
+    for (int i = 0 ; i< NB_AST; i++){
+        CreateNewAsteroide();
     }
+
     rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
 
 }
 
-void Game::handleEvent(SDL_Event e){
-    rocket->handleEvent(e,texture,dest);
+void Game::CreateNewAsteroide(){
+
+    asteroide = new Asteroide(renderer, "./src/asteroide1.bmp");
+    asteroides.push_back(asteroide);
+
 }
 
+void Game::handleEvent(SDL_Event e){
+
+    rocket->handleEvent(e,texture,dest);
+
+}
+
+
 void Game::clean(){
+
     // Close and destroy the window, the renderer and the Texture
     SDL_DestroyWindow(window);
     SDL_DestroyRenderer(renderer);  
     SDL_DestroyTexture(texture);
     rocket->clean();
-    for (int i = 0; i < NB_AST; i++)
+
+    for (int i = 0; i < asteroides.size() ; i++)
     {
-        asteroide[i]->clean();
+        asteroides[i]->clean();
     }
     // Clean up
     SDL_Quit();
+
 }

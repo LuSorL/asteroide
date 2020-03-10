@@ -1,12 +1,12 @@
 #include "../include/Asteroide.hpp"
 
-const float SIZE_AST = 70; // a changer
 
 Asteroide::Asteroide(SDL_Renderer *renderer, const char* path) 
 {
     SDL_Surface *asteroide;
     this->renderer = renderer;
     asteroide = SDL_LoadBMP(path);
+
     if (asteroide == NULL ){
         std::cout << "Problem surface asteroide" << SDL_GetError() << std::endl;
 
@@ -17,11 +17,6 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
         if (Texture_ast == NULL ){
             std::cout << "Problem texture asteroide" << SDL_GetError() << std::endl;
         }
-        else {
-            // Box va contenir asteroide pour détecter les collisions par la suite
-            Box.w = asteroide->w;
-            Box.h = asteroide->h;
-        }
     }
     SDL_FreeSurface(asteroide);
 
@@ -30,7 +25,6 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
 
 	angle = 0;
 
-    
     SDL_QueryTexture(Texture_ast,&format, &access, &L, &H);
 
     src.x = 0;
@@ -49,11 +43,6 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path)
         speed.y = Random(-2, 2);
     }while (speed.x == 0 && speed.y == 0);
     
-    Box.w = SIZE_AST;
-    Box.h = Box.w;
-    Box.x = 1;
-    Box.y = 1;
-
     dead = false ; 
 }
 
@@ -147,7 +136,7 @@ void Asteroide::RandomSprite(){
 
 
 
-void Asteroide::Render2(void) {
+void Asteroide::Render(void) {
     SDL_RenderCopy(renderer, Texture_ast, NULL, &dest_ast);
 }
 
