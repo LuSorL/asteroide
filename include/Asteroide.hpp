@@ -1,5 +1,5 @@
-// #ifndef ASTEROIDE_HPP  
-// #define ASTEROIDE_HPP
+#ifndef ASTEROIDE_HPP  
+#define ASTEROIDE_HPP
 #include <vector>
 #include "SDL.h"
 #include "Border.hpp"
@@ -20,11 +20,10 @@ class Asteroide {
     bool Collision(SDL_Rect* positionRocket);
     float GetSize();
     void Render();
-    void Render2(void);
     void clean();
     SDL_Rect* Position();
 
-    protected : //private ?
+    protected : 
     SDL_Rect speed;
     SDL_Renderer *renderer;
     SDL_Texture *Texture_ast;
@@ -36,7 +35,6 @@ class Asteroide {
     int H;
     int result;
     char *path;
-    SDL_Rect Box;
     SDL_Rect collisionRect;
     float angularSpeed; //vitesse de rotation
     float angle;
@@ -44,3 +42,4 @@ class Asteroide {
     float size;
     int x, y;
 };
+#endif

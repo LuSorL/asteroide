@@ -8,6 +8,7 @@
 #include "Bullet.hpp"
 #include "vaisseau.hpp"
 #include "Asteroide.hpp"
+#include <vector> 
 
 #define NB_AST 10
 
@@ -23,6 +24,7 @@ class Game{
     void clean();
     void run();
     void handleEvent(SDL_Event e);
+    void CreateNewAsteroide();
 
     private : 
     SDL_Renderer* renderer;
@@ -35,7 +37,10 @@ class Game{
     int largeur;
     int hauteur;
     vaisseau* rocket;
-    Asteroide* asteroide[NB_AST];
+    std::vector<Asteroide*> asteroides;
+    Asteroide* asteroide;
+    int newAst;
+    int quit;
 };
 
 #endif
