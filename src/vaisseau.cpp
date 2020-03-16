@@ -1,6 +1,6 @@
 #include "../include/vaisseau.hpp"
 #include "../include/Bullet.hpp"
-#include<cstdio>
+
 
 
 vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
@@ -81,8 +81,8 @@ void vaisseau::Rotate( int direction){
 
 void vaisseau::moveUp(float angle){
 
-	xN = cos(PI * angle /180)*30;
-	yN = sin(PI * angle /180)*30 ;
+	xN = cos(PI * angle /180)* SPEED;
+	yN = sin(PI * angle /180)* SPEED ;
 
 	positionRocket.x += xN;
 	positionRocket.y += yN;
@@ -187,8 +187,8 @@ void vaisseau::Update_bullet(){
 			i--;
 		}
 		else {
-			missile[i]->Position()->x += cos(PI * angle /180)* SPEED;
-			missile[i]->Position()->y += sin(PI * angle /180)* SPEED;
+			missile[i]->Position()->x += cos(PI * angle /180)* SPEED_MISSILE;
+			missile[i]->Position()->y += sin(PI * angle /180)* SPEED_MISSILE;
 		}
 	}
 }
@@ -196,7 +196,6 @@ void vaisseau::Update_bullet(){
 void vaisseau::Render_bullet(){
 
 	for ( int i = 0 ; i < missile.size() ; i++){
-
 		SDL_RenderCopy(renderer, missile[i]->Texture(), NULL, missile[i]->Position());
 	}
 
@@ -209,6 +208,7 @@ Bullet* vaisseau::Fire()
 		bullet = new Bullet(renderer,"./src/laser.bmp", positionRocket.x, positionRocket.y, angle);
 		bulletUsed++;
 		missile.push_back( bullet );
+
 		return bullet;
 		
 	}
@@ -217,6 +217,10 @@ Bullet* vaisseau::Fire()
 
 int vaisseau::MissileSize(){
 	return missile.size();
+}
+
+void vaisseau::Erase( int j ){
+	missile.erase(missile.begin() + j);
 }
 
 Bullet* vaisseau::Missile( int i ){

@@ -1,9 +1,7 @@
 #include "../include/Bullet.hpp"
 
 
-Bullet::Bullet( SDL_Renderer *renderer, const char* path, float vaisseauX, float vaisseauY, float angleV)
-//SDL_Renderer *renderer, const char* path, float vaisseauX, float vaisseauY, float angleV
-{
+Bullet::Bullet( SDL_Renderer *renderer, const char* path, float vaisseauX, float vaisseauY, float angleV){
     SDL_Surface *bullet;
     this->renderer = renderer;
     
@@ -17,18 +15,9 @@ Bullet::Bullet( SDL_Renderer *renderer, const char* path, float vaisseauX, float
         if (Texture_bullet == NULL ){
             std::cout << "Problem texture bullet" << SDL_GetError() << std::endl;
         }
-        else {
-            // Box va contenir bullet pour détecter les collisions par la suite
-            Box.w = bullet->w;
-            Box.h = bullet->h;
-        }
     }
     SDL_FreeSurface(bullet);
-    
 
-
-    Vx = static_cast<float>(sin(2 * PI * (angleV / 360))) * 5;
-	Vy = static_cast<float>(-cos(2 * PI * (angleV / 360))) * 5;
 
     x = vaisseauX + 70;
     y = vaisseauY + 10;
@@ -44,23 +33,8 @@ Bullet::Bullet( SDL_Renderer *renderer, const char* path, float vaisseauX, float
     angle = 0;
 }
 
-void Bullet::Render2(float posX, float posY) {
-    dest_bullet.x = posX;
-    dest_bullet.y = posY;
-    SDL_RenderCopy(renderer, Texture_bullet, NULL, &dest_bullet);
-}
-
 void Bullet::clean(){
     SDL_DestroyTexture(Texture_bullet);
-}
-
-void Bullet::move(float angle){
-    x = cos(PI * angle /180)*60;
-	y = sin(PI * angle /180)*60 ;
-
-	dest_bullet.x += x;
-	dest_bullet.y += y;
-    
 }
 
 SDL_Rect* Bullet::Position(){
