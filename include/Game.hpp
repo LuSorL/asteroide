@@ -8,8 +8,10 @@
 #include "Bullet.hpp"
 #include "vaisseau.hpp"
 #include "Asteroide.hpp"
+#include <vector> 
+#include <cstdlib>
 
-#define NB_AST 10
+#define NB_AST 8
 
 
 using namespace std;
@@ -23,6 +25,8 @@ class Game{
     void clean();
     void run();
     void handleEvent(SDL_Event e);
+    void CreateNewAsteroide();
+    float Random(float x, float y);
 
     private : 
     SDL_Renderer* renderer;
@@ -35,7 +39,15 @@ class Game{
     int largeur;
     int hauteur;
     vaisseau* rocket;
-    Asteroide* asteroide[NB_AST];
+    std::vector<Asteroide*> asteroides;
+    Asteroide* asteroide;
+    Asteroide* mid_ast_1;
+    Asteroide* mid_ast_2;
+    Asteroide* mini_ast_1;
+    Asteroide* mini_ast_2;
+    int quit;
+    float bigSize;
+    float normalSize;
 };
 
 #endif

@@ -3,15 +3,17 @@
 #include "SDL.h"
 #include "./SDL2_rotozoom.h"
 #include "Border.hpp"
-#include <iostream>
 #include "Bullet.hpp"
+#include <iostream>
 #include <vector>
+#include<cstdio>
 
 #define NB_MIS 1000
 
-const float ANGULARSPEED = 15;
+const float ANGULARSPEED = 30;
 const int MAX_BULLETS = 100;
-const float SPEED = 30;
+const float SPEED = 50;
+const float SPEED_MISSILE = 20;
 
 class vaisseau {
     public : 
@@ -36,6 +38,7 @@ class vaisseau {
     int MissileSize();
     Bullet* Missile(int i);
     Bullet* Fire();
+    void Erase(int j);
 
     protected :
     int vX; // vitesse du vaisseau
