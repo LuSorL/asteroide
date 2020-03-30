@@ -10,7 +10,7 @@
 
 #define NB_MIS 1000
 
-const float ANGULARSPEED = 30;
+const float ANGULARSPEED = 20;
 const int MAX_BULLETS = 100;
 const float SPEED = 50;
 const float SPEED_MISSILE = 20;
@@ -41,8 +41,6 @@ class vaisseau {
     void Erase(int j);
 
     protected :
-    int vX; // vitesse du vaisseau
-    int vY;
     float xN;
     float yN;
     int x, y; // position du vaisseau

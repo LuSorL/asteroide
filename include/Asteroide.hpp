@@ -32,13 +32,8 @@ class Asteroide {
     SDL_Rect dest_ast;
     int L;
     int H;
-    int result;
-    char *path;
-    SDL_Rect collisionRect;
-    float angularSpeed; //vitesse de rotation
     float angle;
     bool dead; 
     float size;
-    int x, y;
 };
 #endif

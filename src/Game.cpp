@@ -43,14 +43,21 @@ int Game::initialization(){
 
     if ( imageDeFond == NULL){
         std::cout << " Problème imageDeFond" << SDL_GetError() << std::endl;
+        return EXIT_FAILURE;
     }
     else{
         texture = SDL_CreateTextureFromSurface(renderer, imageDeFond);
         if( texture == NULL){
             std::cout << " Problème Texture" << SDL_GetError() << std::endl;
+            return EXIT_FAILURE;
         }
     }
     SDL_FreeSurface(imageDeFond);
+
+    if (TTF_Init() == -1){
+        std::cout << " Problème initialisation TTF " << TTF_GetError() << std::endl;
+        return EXIT_FAILURE;
+    }
 
     SDL_QueryTexture(texture,&format, &access, &largeur, &hauteur);
 
@@ -95,7 +102,7 @@ void Game::run(){
 
                     if ( asteroides[i]->GetSize() >= bigSize ){ // Si l'asteroide détruite est la pus grande
                         // on fait apparaître 2 mid_ast à la même position que l'astéroide précédente
-                        std::cout << " premiere condition " << j << std::endl;
+                        //std::cout << " premiere condition " << j << std::endl;
                         mid_ast_1 = new Asteroide(renderer, "./src/asteroide1.bmp", asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         mid_ast_2 = new Asteroide(renderer, "./src/asteroide1.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         asteroides[i]->clean();
@@ -104,7 +111,7 @@ void Game::run(){
 
                     }
                     else if ( (asteroides[i]->GetSize() >= normalSize) && (asteroides[i]->GetSize()< bigSize) ){
-                        std::cout << " deuxieme if " << j << std::endl;
+                        //std::cout << " deuxieme if " << j << std::endl;
                         mini_ast_1 = new Asteroide(renderer, "./src/mini.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->x);
                         mini_ast_2 = new Asteroide(renderer, "./src/mini.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         asteroides[i]->clean();
@@ -112,7 +119,7 @@ void Game::run(){
                         asteroides.push_back(mini_ast_2);
                     }
                     else{
-                        std::cout << " destruction mini" << j << std::endl;
+                        //std::cout << " destruction mini" << j << std::endl;
                         asteroides[i]->clean();
                     }
                     asteroides.erase(asteroides.begin() + i);
@@ -152,7 +159,9 @@ void Game::run(){
 void Game::newGame(){
 
     for (int i = 0 ; i< NB_AST; i++){
+
         CreateNewAsteroide();
+
     }
 
     rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
@@ -220,5 +229,6 @@ void Game::clean(){
     }
     // Clean up
     SDL_Quit();
+    TTF_Quit();
 
 }

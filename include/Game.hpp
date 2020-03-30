@@ -2,6 +2,7 @@
 #define GAME_HPP
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include <iostream>
 #include "Border.hpp"
 #include "Texture.hpp"

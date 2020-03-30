@@ -8,6 +8,7 @@ vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
 	SDL_Surface *rocket;
 	this->renderer = renderer;
 	rocket = SDL_LoadBMP(path);
+
 	if ( rocket == NULL ){
 		std::cout << " Load image rocket" << SDL_GetError() << std::endl;
 	}
@@ -55,13 +56,14 @@ vaisseau::~vaisseau(){
 		if( missile[i] ){
 
 			delete missile[i];
+
 		}
 			
 	}
 	SDL_DestroyTexture(Texture_rocket);
 }
 
-
+/*
 void vaisseau::Reset(){
 	x = static_cast<float>(WIDTH_SCREEN) / 2;
 	y = static_cast<float>(HEIGHT_SCREEN) / 2;
@@ -72,7 +74,7 @@ void vaisseau::Reset(){
 
 	bulletUsed = 0;
 	credit--;
-}
+}*/
 
 void vaisseau::Rotate( int direction){
     angle += direction * ANGULARSPEED ;  // direction = +1 ou -1 
@@ -103,41 +105,34 @@ void vaisseau::Render2(void) {
 }
 
 void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
-	if( e.type == SDL_KEYDOWN ){
-		switch( e.key.keysym.sym){
-			case SDLK_ESCAPE : 
-				quit = 1;
-				break;
-			case SDLK_RIGHT :
-				vaisseau::Rotate(1);
-				break;
-			case SDLK_LEFT :
-				vaisseau::Rotate(-1);
-				break;
-			case SDLK_UP :
-				moveUp(angle);
-				break;
-			case SDLK_SPACE :
-				Fire();	
-			break;
-		}
+	const Uint8 *keystates = SDL_GetKeyboardState( NULL );
+
+	if( keystates[ SDL_SCANCODE_UP ] ){
+		moveUp(angle);
 	}
-	else if (e.type == SDL_KEYUP && e.key.repeat == 0){
-		switch( e.key.keysym.sym){
-			case SDLK_ESCAPE : 
-				quit = 1;
-				break;
-			case SDLK_RIGHT :
-				Rotate(1);
-				break;
-			case SDLK_LEFT :
-				Rotate(-1);
-				break;
-			case SDLK_UP :
-				moveUp(angle);
-				break;
-		}
+
+	if( keystates[ SDL_SCANCODE_RIGHT ] ){
+		Rotate(1);
 	}
+	
+	if( keystates[ SDL_SCANCODE_LEFT ] ){
+		Rotate(-1);
+	}
+
+	if( keystates[ SDL_SCANCODE_RIGHT ] && keystates[SDL_SCANCODE_UP] ){
+		moveUp(angle);
+		Rotate(1);
+	}
+
+	if( keystates[ SDL_SCANCODE_LEFT ] && keystates[SDL_SCANCODE_UP] ){
+		moveUp(angle);
+		Rotate(-1);
+	}
+
+	if( keystates[ SDL_SCANCODE_SPACE ] ){
+		Fire();
+	}
+
 }
 
 float vaisseau::getAngle(){
@@ -152,6 +147,7 @@ SDL_Rect* vaisseau::Position(){
 
 void vaisseau::UpdateCredit(int i){
 	credit += i;
+	std::cout << " credit " << credit << std::endl;
 }
 
 

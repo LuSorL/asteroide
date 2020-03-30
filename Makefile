@@ -1,6 +1,6 @@
 
 CFLAGS = -g -I /usr/local/lib -I include 
-LDFLAGS = -lSDL2-2.0.0
+LDFLAGS = -lSDL2-2.0.0 -lSDL2_ttf
 
 SRC  = $(wildcard ./src/*.cpp)
 INCL = $(wildcard ./include/*.hpp)

@@ -20,8 +20,6 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float
     }
     SDL_FreeSurface(asteroide);
 
-    //x = Random(0, WIDTH_SCREEN) ;
-	//y = Random(0, HEIGHT_SCREEN) ;  
 
 	angle = 0;
 
@@ -32,9 +30,6 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float
 	src.w = L; 
 	src.h = H;
 
-
-    //dest_ast.x = x;
-    //dest_ast.y = y;
     dest_ast.x = posX;
     dest_ast.y = posY;
     dest_ast.w = L;
