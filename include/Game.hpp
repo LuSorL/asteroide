@@ -1,15 +1,16 @@
 #ifndef GAME_HPP
 #define GAME_HPP
 
-#include "SDL.h"
-#include "SDL_ttf.h"
+#include "./SDL2/SDL.h"
+#include "./SDL2/SDL_ttf.h"
 #include <iostream>
 #include "Border.hpp"
 #include "Texture.hpp"
 #include "Bullet.hpp"
 #include "vaisseau.hpp"
 #include "Asteroide.hpp"
-#include <vector> 
+#include "fonction.hpp"
+#include <vector>
 #include <cstdlib>
 
 #define NB_AST 8
@@ -18,18 +19,16 @@
 using namespace std;
 
 class Game{
-    public : 
+    public :
     Game();
     ~Game();
     int initialization();
     void newGame();
     void clean();
     void run();
-    void handleEvent(SDL_Event e);
     void CreateNewAsteroide();
-    float Random(float x, float y);
 
-    private : 
+    private :
     SDL_Renderer* renderer;
 	SDL_Window* window;
     SDL_Texture *texture;
@@ -46,6 +45,7 @@ class Game{
     Asteroide* mid_ast_2;
     Asteroide* mini_ast_1;
     Asteroide* mini_ast_2;
+    Texture* police;
     int quit;
     float bigSize;
     float normalSize;

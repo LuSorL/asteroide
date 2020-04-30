@@ -20,15 +20,9 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float
     }
     SDL_FreeSurface(asteroide);
 
-
 	angle = 0;
 
     SDL_QueryTexture(Texture_ast,&format, &access, &L, &H);
-
-    src.x = 0;
-	src.y = 0;
-	src.w = L; 
-	src.h = H;
 
     dest_ast.x = posX;
     dest_ast.y = posY;
@@ -37,9 +31,10 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float
 
     size = L * H ;
 
+    // Attribution d'une vitesse aléatoire à l'astéroide
     do {
-        speed.x = Random(-2, 2);
-        speed.y = Random(-2, 2);
+        speed.x = Random(-2.0, 2.0);
+        speed.y = Random(-2.0, 2.0);
     }while (speed.x == 0 && speed.y == 0);
     
     dead = false ; 
@@ -54,19 +49,8 @@ bool Asteroide::IsDead(){
     return dead; 
 }
 
-
 float Asteroide::GetSize(){
     return size;
-}
-
-float Asteroide::Random(float x, float y){
-    // fonction rendant un chiffre entre x et y
-    if (x < y ){
-        return ((float)rand() / (float)(RAND_MAX)) * (y-x) + x;
-    }
-    else{
-        return ((float)rand() / (float)(RAND_MAX)) * (x-y) + y;
-    }
 }
 
 void Asteroide::UpdateAsteroide(){
@@ -74,6 +58,8 @@ void Asteroide::UpdateAsteroide(){
     dest_ast.x += speed.x;
     dest_ast.y += speed.y;
 
+    // Si l'astéroide sort de l'écran on l'a fait apparaître 
+    // sur le côté opposé à la même abscisse ou même ordonnée
     if (dest_ast.x <= 0)
     {
         dest_ast.x = dest_ast.x + WIDTH_SCREEN;
@@ -95,6 +81,7 @@ void Asteroide::UpdateAsteroide(){
 
 bool Asteroide::Collision(SDL_Rect* positionRocket){
 
+    // Permet de savoir si les Rect de l'astéroide et du vaisseau ont une intersection
     bool Bool = SDL_HasIntersection(&dest_ast, positionRocket);
 
     if(Bool){

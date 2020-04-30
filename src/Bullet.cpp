@@ -54,7 +54,4 @@ bool Bullet::Collision(SDL_Rect* positionAst){
     
 }
 
-Bullet::~Bullet()
-{
-	//vaisseau.EndFire();
-}
+Bullet::~Bullet(){}

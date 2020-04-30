@@ -46,42 +46,21 @@ vaisseau::vaisseau(SDL_Renderer *renderer, const char* path)
 	positionRocket.w = width ;
 	positionRocket.h = height ;
   
-	credit = 100; // nombre de vies
+	credit = CREDIT; // nombre de vies
 	score = 0 ;
 }
 
 vaisseau::~vaisseau(){
-	for(int i = 0; i < missile.size(); i++)
-	{
-		if( missile[i] ){
+	std::cout<< " Je suis le destructeur de Rocket" << std::endl;
 
-			delete missile[i];
-
-		}
-			
-	}
-	SDL_DestroyTexture(Texture_rocket);
 }
-
-/*
-void vaisseau::Reset(){
-	x = static_cast<float>(WIDTH_SCREEN) / 2;
-	y = static_cast<float>(HEIGHT_SCREEN) / 2;
-	angle = 0;
-	vX = vY = 0;
-
-	// No bullets fired yet
-
-	bulletUsed = 0;
-	credit--;
-}*/
 
 void vaisseau::Rotate( int direction){
     angle += direction * ANGULARSPEED ;  // direction = +1 ou -1 
 }
 
 
-void vaisseau::moveUp(float angle){
+void vaisseau::move(float angle){
 
 	xN = cos(PI * angle /180)* SPEED;
 	yN = sin(PI * angle /180)* SPEED ;
@@ -100,15 +79,15 @@ void vaisseau::moveUp(float angle){
 
 
 
-void vaisseau::Render2(void) {
+void vaisseau::Render(void) {
 	SDL_RenderCopyEx(renderer, Texture_rocket, &src , &positionRocket, angle, NULL, SDL_FLIP_NONE);
 }
 
-void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
+void vaisseau::handleEvent(){
 	const Uint8 *keystates = SDL_GetKeyboardState( NULL );
 
 	if( keystates[ SDL_SCANCODE_UP ] ){
-		moveUp(angle);
+		move(angle);
 	}
 
 	if( keystates[ SDL_SCANCODE_RIGHT ] ){
@@ -120,12 +99,12 @@ void vaisseau::handleEvent(SDL_Event &e, SDL_Texture* texture, SDL_Rect &dest){
 	}
 
 	if( keystates[ SDL_SCANCODE_RIGHT ] && keystates[SDL_SCANCODE_UP] ){
-		moveUp(angle);
+		move(angle);
 		Rotate(1);
 	}
 
 	if( keystates[ SDL_SCANCODE_LEFT ] && keystates[SDL_SCANCODE_UP] ){
-		moveUp(angle);
+		move(angle);
 		Rotate(-1);
 	}
 
@@ -144,18 +123,21 @@ SDL_Rect* vaisseau::Position(){
 	return pos;
 }
 
-
 void vaisseau::UpdateCredit(int i){
 	credit += i;
-	std::cout << " credit " << credit << std::endl;
 }
 
+int vaisseau::Credit(){
+	return credit;
+}
 
 void vaisseau::UpdateScore(){
 	score++;
-	std::cout << "score " << score << std::endl;
 }
 
+int vaisseau::Score(){
+	return score;
+}
 
 bool vaisseau::IsDead(){
 	if (credit <= 0){
@@ -167,6 +149,15 @@ bool vaisseau::IsDead(){
 }
 
 void vaisseau::clean(){
+	for(int i = 0; i < missile.size(); i++)
+	{
+		if( missile[i] ){
+
+			delete missile[i];
+
+		}
+			
+	}
 	SDL_DestroyTexture(Texture_rocket);
 }
 

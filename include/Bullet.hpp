@@ -1,13 +1,13 @@
-#ifndef BULLET_HPP  
+#ifndef BULLET_HPP
 #define BULLET_HPP
-#include "SDL.h"
+#include "./SDL2/SDL.h"
 #include "Border.hpp"
 #include <iostream>
-#include "SDL_image.h"
+#include "./SDL2/SDL_image.h"
 #include <vector>
 
 class Bullet {
-    public : 
+    public :
     ~Bullet();
     Bullet( SDL_Renderer *renderer ,const char* path, float vaisseauX, float vaisseauY, float angleV);
     void handleEvent(SDL_Event &e, float angle);
@@ -17,7 +17,7 @@ class Bullet {
     void clean();
 
 
-    protected : 
+    protected :
     SDL_Renderer *renderer;
     SDL_Texture* Texture_bullet;
     SDL_Rect dest_bullet;

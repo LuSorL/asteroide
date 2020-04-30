@@ -75,34 +75,42 @@ void Game::run(){
 
     quit = 0 ;
 
+
+    // Tant qu'on ne quitte pas
     while( !quit ){
 
-        // déplacement astéroide & tests collisions
-        for (int i = 0; i < asteroides.size(); i++)
+        // déplacement astéroide aléatoire & tests collisions
+        for (size_t i = 0; i < asteroides.size(); i++)
         {
+            // Mise à jour de la position de l'astéroide
             asteroides[i]->UpdateAsteroide();
             
+            // Si on a collision entre la rocket et l'astéroide
             if (asteroides[i]->Collision(rocket->Position()))
             {
+                // Enlever une vie à rocket 
                 rocket->UpdateCredit(-1);
             }
+            // Si rocket est morte on quitte
             if (rocket->IsDead())
             {
                 quit = 1;
             }
 
+            // Missile
+            // Pour tous nos missiles
             for ( int j = 0; j < rocket->MissileSize() ; j++){
+                // On regarde si il y a collisions avec l'astéroide
+                // Si oui on l'efface et on met à jour le score
                 if ( rocket->Missile(j)->Collision( asteroides[i]->Position() )){
-                    std::cout << " missile " << j << std::endl;
-                    std::cout << "size missile " << rocket->MissileSize() << std::endl;
                     rocket->Missile(j)->clean();
                     rocket->Erase(j);
-
+                    
                     rocket->UpdateScore(); 
 
                     if ( asteroides[i]->GetSize() >= bigSize ){ // Si l'asteroide détruite est la pus grande
                         // on fait apparaître 2 mid_ast à la même position que l'astéroide précédente
-                        //std::cout << " premiere condition " << j << std::endl;
+                        
                         mid_ast_1 = new Asteroide(renderer, "./src/asteroide1.bmp", asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         mid_ast_2 = new Asteroide(renderer, "./src/asteroide1.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         asteroides[i]->clean();
@@ -111,7 +119,7 @@ void Game::run(){
 
                     }
                     else if ( (asteroides[i]->GetSize() >= normalSize) && (asteroides[i]->GetSize()< bigSize) ){
-                        //std::cout << " deuxieme if " << j << std::endl;
+                        /* Quand l'astéroide est de taille moyenne on l'a sous divise en deux petites astéroides */
                         mini_ast_1 = new Asteroide(renderer, "./src/mini.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->x);
                         mini_ast_2 = new Asteroide(renderer, "./src/mini.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         asteroides[i]->clean();
@@ -119,34 +127,39 @@ void Game::run(){
                         asteroides.push_back(mini_ast_2);
                     }
                     else{
-                        //std::cout << " destruction mini" << j << std::endl;
+                        /*Quand l'astéroide a la taille minimale on la supprime*/
                         asteroides[i]->clean();
                     }
                     asteroides.erase(asteroides.begin() + i);
-                    std::cout << " nombre d'astéroides " << asteroides.size() << std::endl;
                 }
             }
 
+            // Permet d'avoir un nombre d'astéroides minimum sur l'écran
             if ( (asteroides.size() < NB_AST ) ){
                 CreateNewAsteroide();
             }
         }
 
+        // Il faut regarder la fonction handleEvent de rocket pour les évènements
         while(SDL_PollEvent(&e) ){
             if( e.type == SDL_QUIT){
                 quit = 1;
             }
-            rocket->handleEvent(e,texture,dest);
+            rocket->handleEvent();
         }
 
+        // Affichage
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer,texture,NULL,&dest);
 
-        rocket->Render2();
+        rocket->Render();
         rocket->Update_bullet();
         rocket->Render_bullet();
 
-        for (int i = 0; i < asteroides.size(); i++)
+        police->loadFromRenderedText( renderer, rocket->Score(), rocket->Credit());
+        police->Render(renderer);
+
+        for (size_t i = 0; i < asteroides.size(); i++)
         {
             asteroides[i]->Render();
         }
@@ -158,6 +171,8 @@ void Game::run(){
 
 void Game::newGame(){
 
+    // Création de nos objets
+
     for (int i = 0 ; i< NB_AST; i++){
 
         CreateNewAsteroide();
@@ -165,6 +180,12 @@ void Game::newGame(){
     }
 
     rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
+
+    police = new Texture();
+    
+    if ( !police->loadMedia(renderer, rocket->Score(), rocket->Credit())){
+        std::cout << " police loadMedia " << std::endl;
+    }
 
 }
 
@@ -198,22 +219,6 @@ void Game::CreateNewAsteroide(){
 }
 
 
-void Game::handleEvent(SDL_Event e){
-
-    rocket->handleEvent(e,texture,dest);
-
-}
-
-float Game::Random(float x, float y){
-    // fonction rendant un chiffre entre x et y
-    if (x < y ){
-        return ((float)rand() / (float)(RAND_MAX)) * (y-x) + x;
-    }
-    else{
-        return ((float)rand() / (float)(RAND_MAX)) * (x-y) + y;
-    }
-}
-
 void Game::clean(){
 
     // Close and destroy the window, the renderer and the Texture
@@ -221,9 +226,10 @@ void Game::clean(){
     SDL_DestroyRenderer(renderer);  
     SDL_DestroyTexture(texture);
 
+    // Clean nos objets
     rocket->clean();
-
-    for (int i = 0; i < asteroides.size() ; i++)
+    police->clean();
+    for (size_t i = 0; i < asteroides.size() ; i++)
     {
         asteroides[i]->clean();
     }

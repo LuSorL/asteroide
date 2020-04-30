@@ -1,7 +1,7 @@
-#ifndef VAISSEAU_HPP  
+#ifndef VAISSEAU_HPP
 #define VAISSEAU_HPP
-#include "SDL.h"
-#include "./SDL2_rotozoom.h"
+#include "./SDL2/SDL.h"
+#include "./SDL2/SDL2_rotozoom.h"
 #include "Border.hpp"
 #include "Bullet.hpp"
 #include <iostream>
@@ -9,28 +9,29 @@
 #include<cstdio>
 
 #define NB_MIS 1000
-
+#define CREDIT 100
 const float ANGULARSPEED = 20;
 const int MAX_BULLETS = 100;
 const float SPEED = 50;
 const float SPEED_MISSILE = 20;
 
 class vaisseau {
-    public : 
+    public :
     /*VAISSEAU*/
     vaisseau(SDL_Renderer *renderer, const char* path);
     ~vaisseau();
-    void Reset(); //Reset Game
     void Rotate(int direction); // rotation du vaisseauc
-    void handleEvent(SDL_Event &e,SDL_Texture* texture, SDL_Rect &dest);
-    void Render2(void);
-    void moveUp(float angle);
+    void handleEvent();
+    void Render(void);
+    void move(float angle);
     float getAngle();
     SDL_Rect* Position();
     void UpdateCredit(int i);
     void UpdateScore();
     bool IsDead();
     void clean();
+    int Score();
+    int Credit();
 
     /* BULLET */
     void Update_bullet();
@@ -47,7 +48,7 @@ class vaisseau {
     int width;
     int height;
     char *path;
-    float angle; 
+    float angle;
     Uint32 format;
     int a;
     int result;
@@ -64,7 +65,7 @@ class vaisseau {
     Bullet *newBullet;
     float accelerationFactor;
     int credit; // Vie
-    int bulletUsed; 
+    int bulletUsed;
     std::vector<Bullet*> missile;
     int score;
 
