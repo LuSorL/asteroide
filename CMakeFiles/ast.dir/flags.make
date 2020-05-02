@@ -6,5 +6,5 @@ CXX_FLAGS =  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk 
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/usr/local/include/SDL2 -I/Users/monetanais/Desktop/asteroide-master-2/game/include -isystem /usr/local/Cellar/sdl2/2.0.12_1/include/SDL2 
+CXX_INCLUDES = -I/usr/local/include/SDL2 -I/Users/monetanais/Desktop/ast/asteroide/include -isystem /usr/local/Cellar/sdl2/2.0.12_1/include/SDL2 
 

@@ -68,6 +68,7 @@ void vaisseau::move(float angle){
 	positionRocket.x += xN;
 	positionRocket.y += yN;
 
+	/* Empêche l'astéroide de sortir de la fenêtre */
 	if( positionRocket.x < 0 || (positionRocket.x + RenderRect.w > WIDTH_SCREEN)){
 		positionRocket.x -= xN ;
 	}
@@ -131,8 +132,8 @@ int vaisseau::Credit(){
 	return credit;
 }
 
-void vaisseau::UpdateScore(){
-	score++;
+void vaisseau::UpdateScore(int i){
+	score += i;
 }
 
 int vaisseau::Score(){
@@ -149,7 +150,7 @@ bool vaisseau::IsDead(){
 }
 
 void vaisseau::clean(){
-	for(int i = 0; i < missile.size(); i++)
+	for(size_t i = 0; i < missile.size(); i++)
 	{
 		if( missile[i] ){
 
@@ -166,7 +167,7 @@ void vaisseau::clean(){
 
 void vaisseau::Update_bullet(){
 
-	for (int i = 0 ; i < missile.size() ; i++ ){
+	for (size_t i = 0 ; i < missile.size() ; i++ ){
 		if ((missile[i]->Position()->x < 0) || (missile[i]->Position()->y < 0) ||
 		(missile[i]->Position()->x > WIDTH_SCREEN) || (missile[i]->Position()->y > HEIGHT_SCREEN)){
 			delete missile[i];
@@ -182,7 +183,7 @@ void vaisseau::Update_bullet(){
 
 void vaisseau::Render_bullet(){
 
-	for ( int i = 0 ; i < missile.size() ; i++){
+	for ( size_t i = 0 ; i < missile.size() ; i++){
 		SDL_RenderCopy(renderer, missile[i]->Texture(), NULL, missile[i]->Position());
 	}
 

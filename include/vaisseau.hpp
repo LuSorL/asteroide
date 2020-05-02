@@ -27,7 +27,7 @@ class vaisseau {
     float getAngle();
     SDL_Rect* Position();
     void UpdateCredit(int i);
-    void UpdateScore();
+    void UpdateScore(int i);
     bool IsDead();
     void clean();
     int Score();

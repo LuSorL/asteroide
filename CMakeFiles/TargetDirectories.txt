@@ -1,3 +1,3 @@
-/Users/monetanais/Desktop/asteroide-master-2/game/CMakeFiles/rebuild_cache.dir
-/Users/monetanais/Desktop/asteroide-master-2/game/CMakeFiles/edit_cache.dir
-/Users/monetanais/Desktop/asteroide-master-2/game/CMakeFiles/ast.dir
+/Users/monetanais/Desktop/ast/asteroide/CMakeFiles/rebuild_cache.dir
+/Users/monetanais/Desktop/ast/asteroide/CMakeFiles/edit_cache.dir
+/Users/monetanais/Desktop/ast/asteroide/CMakeFiles/ast.dir

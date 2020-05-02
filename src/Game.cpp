@@ -11,6 +11,7 @@ Game::~Game(){
 
 int Game::initialization(){
     
+    /* Initialisation du jeu */
     SDL_Surface *imageDeFond;
     
     if (SDL_Init(SDL_INIT_VIDEO) < 0 ){
@@ -88,8 +89,19 @@ void Game::run(){
             // Si on a collision entre la rocket et l'astéroide
             if (asteroides[i]->Collision(rocket->Position()))
             {
-                // Enlever une vie à rocket 
-                rocket->UpdateCredit(-1);
+                if ( asteroides[i]->GetSize() >= bigSize ) {
+                    // Enlever 3 vies à rocket si l'astéroide est de taille maximale
+                    rocket->UpdateCredit(-3);
+                }
+                else if ( (asteroides[i]->GetSize() >= normalSize) && (asteroides[i]->GetSize()< bigSize) ){
+                    // Enelver 2 vies à rocket si l'astéroide est de taille moyenne
+                    rocket->UpdateCredit(-2);
+                }
+                else {
+                    // Sinon lui retirer une vie
+                    rocket->UpdateCredit(-1);
+                }
+                
             }
             // Si rocket est morte on quitte
             if (rocket->IsDead())
@@ -106,11 +118,15 @@ void Game::run(){
                     rocket->Missile(j)->clean();
                     rocket->Erase(j);
                     
-                    rocket->UpdateScore(); 
+                    //rocket->UpdateScore(); 
 
                     if ( asteroides[i]->GetSize() >= bigSize ){ // Si l'asteroide détruite est la pus grande
                         // on fait apparaître 2 mid_ast à la même position que l'astéroide précédente
-                        
+
+                        /* 3 points en plus pour une astéroide de taille maximale*/
+                        rocket->UpdateScore(3); 
+
+                        /* Apparition de 2 mid astéroides */
                         mid_ast_1 = new Asteroide(renderer, "./src/asteroide1.bmp", asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         mid_ast_2 = new Asteroide(renderer, "./src/asteroide1.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->y);
                         asteroides[i]->clean();
@@ -119,6 +135,9 @@ void Game::run(){
 
                     }
                     else if ( (asteroides[i]->GetSize() >= normalSize) && (asteroides[i]->GetSize()< bigSize) ){
+                        /* 2 points en plus pour une astéroide de taille moyenne */
+                        rocket->UpdateScore(2); 
+
                         /* Quand l'astéroide est de taille moyenne on l'a sous divise en deux petites astéroides */
                         mini_ast_1 = new Asteroide(renderer, "./src/mini.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->x);
                         mini_ast_2 = new Asteroide(renderer, "./src/mini.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->y);
@@ -127,6 +146,9 @@ void Game::run(){
                         asteroides.push_back(mini_ast_2);
                     }
                     else{
+                        /* 1 point en plus pour une astéroide de taille minimale */
+                        rocket->UpdateScore(1); 
+
                         /*Quand l'astéroide a la taille minimale on la supprime*/
                         asteroides[i]->clean();
                     }
