@@ -1,11 +1,16 @@
 #include "../include/Asteroide.hpp"
 
 
-Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float posY) 
+Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float posY)
 {
     SDL_Surface *asteroide;
     this->renderer = renderer;
     asteroide = SDL_LoadBMP(path);
+
+    Uint32 format;
+    int access;
+    int L;
+    int H;
 
     if (asteroide == NULL ){
         std::cout << "Problem surface asteroide" << SDL_GetError() << std::endl;
@@ -19,8 +24,6 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float
         }
     }
     SDL_FreeSurface(asteroide);
-
-	angle = 0;
 
     SDL_QueryTexture(Texture_ast,&format, &access, &L, &H);
 
@@ -36,8 +39,8 @@ Asteroide::Asteroide(SDL_Renderer *renderer, const char* path, float posX, float
         speed.x = Random(-2.0, 2.0);
         speed.y = Random(-2.0, 2.0);
     }while (speed.x == 0 && speed.y == 0);
-    
-    dead = false ; 
+
+    dead = false ;
 
 }
 
@@ -46,7 +49,7 @@ Asteroide::~Asteroide(){
 }
 
 bool Asteroide::IsDead(){
-    return dead; 
+    return dead;
 }
 
 float Asteroide::GetSize(){
@@ -58,7 +61,7 @@ void Asteroide::UpdateAsteroide(){
     dest_ast.x += speed.x;
     dest_ast.y += speed.y;
 
-    // Si l'astéroide sort de l'écran on l'a fait apparaître 
+    // Si l'astéroide sort de l'écran on l'a fait apparaître
     // sur le côté opposé à la même abscisse ou même ordonnée
     if (dest_ast.x <= 0)
     {

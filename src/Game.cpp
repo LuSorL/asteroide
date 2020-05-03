@@ -10,32 +10,35 @@ Game::~Game(){
 }
 
 int Game::initialization(){
-    
+    Uint32 format;
+    int access;
+    int largeur;
+    int hauteur;
     /* Initialisation du jeu */
     SDL_Surface *imageDeFond;
-    
+
     if (SDL_Init(SDL_INIT_VIDEO) < 0 ){
         cout << " init fail" << endl;
         return EXIT_FAILURE;
     }
 
     window = SDL_CreateWindow(
-        "Game",                         
-        SDL_WINDOWPOS_UNDEFINED,           
-        SDL_WINDOWPOS_UNDEFINED,                                 
-        WIDTH_SCREEN,                               
-        HEIGHT_SCREEN,                              
-        SDL_WINDOW_SHOWN                  
+        "Game",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        WIDTH_SCREEN,
+        HEIGHT_SCREEN,
+        SDL_WINDOW_SHOWN
     );
 
     if (window == NULL) {
         cout << "Could not open Window: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
     }
-    
+
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
-    if(renderer == NULL){   
+    if(renderer == NULL){
         cout << "Could not open Renderer: " << SDL_GetError() << endl;
         return EXIT_FAILURE;
     }
@@ -68,14 +71,17 @@ int Game::initialization(){
     dest.h = hauteur;
 
     Game::newGame();
-    
+
     return EXIT_SUCCESS;
 }
 
 void Game::run(){
 
     quit = 0 ;
-
+    Asteroide* mid_ast_1;
+    Asteroide* mid_ast_2;
+    Asteroide* mini_ast_1;
+    Asteroide* mini_ast_2;
 
     // Tant qu'on ne quitte pas
     while( !quit ){
@@ -85,7 +91,7 @@ void Game::run(){
         {
             // Mise à jour de la position de l'astéroide
             asteroides[i]->UpdateAsteroide();
-            
+
             // Si on a collision entre la rocket et l'astéroide
             if (asteroides[i]->Collision(rocket->Position()))
             {
@@ -101,7 +107,7 @@ void Game::run(){
                     // Sinon lui retirer une vie
                     rocket->UpdateCredit(-1);
                 }
-                
+
             }
             // Si rocket est morte on quitte
             if (rocket->IsDead())
@@ -117,14 +123,14 @@ void Game::run(){
                 if ( rocket->Missile(j)->Collision( asteroides[i]->Position() )){
                     rocket->Missile(j)->clean();
                     rocket->Erase(j);
-                    
-                    //rocket->UpdateScore(); 
+
+                    //rocket->UpdateScore();
 
                     if ( asteroides[i]->GetSize() >= bigSize ){ // Si l'asteroide détruite est la pus grande
                         // on fait apparaître 2 mid_ast à la même position que l'astéroide précédente
 
                         /* 3 points en plus pour une astéroide de taille maximale*/
-                        rocket->UpdateScore(3); 
+                        rocket->UpdateScore(3);
 
                         /* Apparition de 2 mid astéroides */
                         mid_ast_1 = new Asteroide(renderer, "./src/asteroide1.bmp", asteroides[i]->Position()->x, asteroides[i]->Position()->y);
@@ -136,7 +142,7 @@ void Game::run(){
                     }
                     else if ( (asteroides[i]->GetSize() >= normalSize) && (asteroides[i]->GetSize()< bigSize) ){
                         /* 2 points en plus pour une astéroide de taille moyenne */
-                        rocket->UpdateScore(2); 
+                        rocket->UpdateScore(2);
 
                         /* Quand l'astéroide est de taille moyenne on l'a sous divise en deux petites astéroides */
                         mini_ast_1 = new Asteroide(renderer, "./src/mini.bmp",asteroides[i]->Position()->x, asteroides[i]->Position()->x);
@@ -147,7 +153,7 @@ void Game::run(){
                     }
                     else{
                         /* 1 point en plus pour une astéroide de taille minimale */
-                        rocket->UpdateScore(1); 
+                        rocket->UpdateScore(1);
 
                         /*Quand l'astéroide a la taille minimale on la supprime*/
                         asteroides[i]->clean();
@@ -188,7 +194,7 @@ void Game::run(){
 
         SDL_RenderPresent(renderer);
     }
-    
+
 }
 
 void Game::newGame(){
@@ -204,7 +210,7 @@ void Game::newGame(){
     rocket = new vaisseau(renderer, "./src/vaisseauR.bmp");
 
     police = new Texture();
-    
+
     if ( !police->loadMedia(renderer, rocket->Score(), rocket->Credit())){
         std::cout << " police loadMedia " << std::endl;
     }
@@ -212,7 +218,7 @@ void Game::newGame(){
 }
 
 void Game::CreateNewAsteroide(){
-    
+
     /* Cette fonction créée une asteroide pouvant avoir 3 tailles différentes */
 
     int r = rand() % 3 + 1;
@@ -226,9 +232,9 @@ void Game::CreateNewAsteroide(){
         normalSize = asteroide->GetSize();
         break;
 
-        case 2 : 
+        case 2 :
         asteroide = new Asteroide(renderer, "./src/mini.bmp", posX, posY);
-        break; 
+        break;
 
         case 3 :
         asteroide = new Asteroide(renderer, "./src/big.bmp", posX, posY);
@@ -245,7 +251,7 @@ void Game::clean(){
 
     // Close and destroy the window, the renderer and the Texture
     SDL_DestroyWindow(window);
-    SDL_DestroyRenderer(renderer);  
+    SDL_DestroyRenderer(renderer);
     SDL_DestroyTexture(texture);
 
     // Clean nos objets

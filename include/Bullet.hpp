@@ -9,8 +9,7 @@
 class Bullet {
     public :
     ~Bullet();
-    Bullet( SDL_Renderer *renderer ,const char* path, float vaisseauX, float vaisseauY, float angleV);
-    void handleEvent(SDL_Event &e, float angle);
+    Bullet( SDL_Renderer *renderer ,const char* path, float vaisseauX, float vaisseauY);
     SDL_Rect* Position();
     SDL_Texture* Texture();
     bool Collision(SDL_Rect* positionAst);
@@ -23,17 +22,6 @@ class Bullet {
     SDL_Rect dest_bullet;
     int x;
     int y;
-    int quit;
-    Uint32 format;
-    int a;
-    int L;
-    int H;
-    int speed;
-    float angle;
-    float angularSpeed;
-    int createdNow;  // instant t de création de la balle
-
-
 };
 
 #endif

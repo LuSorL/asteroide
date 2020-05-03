@@ -20,7 +20,7 @@ class vaisseau {
     /*VAISSEAU*/
     vaisseau(SDL_Renderer *renderer, const char* path);
     ~vaisseau();
-    void Rotate(int direction); // rotation du vaisseauc
+    void Rotate(int direction); 
     void handleEvent();
     void Render(void);
     void move(float angle);
@@ -42,17 +42,10 @@ class vaisseau {
     void Erase(int j);
 
     protected :
-    float xN;
-    float yN;
     int x, y; // position du vaisseau
-    int width;
-    int height;
-    char *path;
-    float angle;
-    Uint32 format;
-    int a;
-    int result;
-    int quit;
+    float angle; // angle du vaisseau
+    int credit; // Vies
+    int score;
     SDL_Rect positionRocket;
     SDL_Point center;
     SDL_Rect src;
@@ -60,14 +53,10 @@ class vaisseau {
     SDL_Rect RenderRect;
     SDL_Texture *Texture_rocket;
 
+    /* Objets Bullet */
     SDL_Texture* texture;
-    Bullet *bullet;
-    Bullet *newBullet;
-    float accelerationFactor;
-    int credit; // Vie
     int bulletUsed;
-    std::vector<Bullet*> missile;
-    int score;
+    std::vector<Bullet*> missile; // Vecteur contenant nos missiles
 
 };
 

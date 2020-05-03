@@ -8,7 +8,6 @@
 
 class Texture {
     public :
-    //Texture(SDL_Renderer *renderer, int score);
     Texture();
     ~Texture();
     void clean();

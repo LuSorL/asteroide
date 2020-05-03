@@ -26,12 +26,7 @@ class Asteroide {
     SDL_Rect speed;
     SDL_Renderer *renderer;
     SDL_Texture *Texture_ast;
-    Uint32 format;
-    int access;
     SDL_Rect dest_ast;
-    int L;
-    int H;
-    float angle;
     bool dead;
     float size;
 };

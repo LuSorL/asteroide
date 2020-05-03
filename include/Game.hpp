@@ -30,24 +30,16 @@ class Game{
 
     private :
     SDL_Renderer* renderer;
-	SDL_Window* window;
+	  SDL_Window* window;
     SDL_Texture *texture;
     SDL_Event e;
     SDL_Rect dest;
-    Uint32 format;
-    int access;
-    int largeur;
-    int hauteur;
     vaisseau* rocket;
     std::vector<Asteroide*> asteroides;
     Asteroide* asteroide;
-    Asteroide* mid_ast_1;
-    Asteroide* mid_ast_2;
-    Asteroide* mini_ast_1;
-    Asteroide* mini_ast_2;
     Texture* police;
     int quit;
-    float bigSize;
+    float bigSize; // Pour les astéroides
     float normalSize;
 };
 

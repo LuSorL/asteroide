@@ -13,7 +13,7 @@ Texture::~Texture(){
 
 void Texture::clean()
 {
-	//Free texture 
+	//Free texture
 	if( Texture_Surface != NULL && Texture_SurfaceScore != NULL &&
 	Texture_SurfaceCred != NULL && Texture_SurfaceCredit != NULL)
 	{
@@ -36,6 +36,7 @@ void Texture::clean()
 	}
 }
 
+/* Va transformer nos surfaces de texte en texture qu'on pourra donc afficher */
 bool Texture::loadFromRenderedText( SDL_Renderer *renderer, int score, int credit)
 {
 	//Convertir les int en string pour les afficher
@@ -54,7 +55,7 @@ bool Texture::loadFromRenderedText( SDL_Renderer *renderer, int score, int credi
 	if( textSurface == NULL  && textSurfaceScore==NULL && textSurfaceCred==NULL
 	&& textSurfaceCredit==NULL )
 	{
-		printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+		printf( "TTF_RenderText_Solid SDL_ttf Error: %s\n", TTF_GetError() );
 	}
 	else
 	{
@@ -66,7 +67,7 @@ bool Texture::loadFromRenderedText( SDL_Renderer *renderer, int score, int credi
 		if( Texture_Surface == NULL && Texture_SurfaceScore == NULL
 		&& Texture_SurfaceCred==NULL && Texture_SurfaceCredit==NULL )
 		{
-			printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+			printf( " SDL_CreateTextureFromSurface SDL Error: %s\n", SDL_GetError() );
 		}
 		else
 		{
@@ -84,20 +85,19 @@ bool Texture::loadFromRenderedText( SDL_Renderer *renderer, int score, int credi
 			HeightCredit = textSurfaceCredit->h;
 		}
 
-	
+
 		SDL_FreeSurface( textSurface );
 		SDL_FreeSurface( textSurfaceScore );
 		SDL_FreeSurface( textSurfaceCred );
 		SDL_FreeSurface( textSurfaceCredit );
 	}
-	
-	//Return success
+
 	return (Texture_Surface != NULL && Texture_SurfaceScore != NULL && Texture_SurfaceCred != NULL && Texture_SurfaceCredit != NULL) ;
 }
 
 void Texture::Render(SDL_Renderer *renderer)
 {
-	
+	/* Choix des positions de l'écriture */
 	positionScore.x = 20 ;
 	positionScore.y = 20 ;
 	positionScore.h = HeightScore;
@@ -127,6 +127,8 @@ void Texture::Render(SDL_Renderer *renderer)
 
 }
 
+/* Première fonction qui est appelé dans Game et va nous permettre de charger
+ la police lazy */
 bool Texture::loadMedia(SDL_Renderer * renderer, int score, int credit)
 {
 	//Loading success flag
@@ -136,23 +138,21 @@ bool Texture::loadMedia(SDL_Renderer * renderer, int score, int credit)
 	gFont = TTF_OpenFont( "./src/lazy.ttf", 28 );
 	if( gFont == NULL )
 	{
-		printf( "Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+		printf( "TTF_OpenFont SDL_ttf Error: %s\n", TTF_GetError() );
 		success = false;
 	}
 	else
 	{
-		//Render text
 		// Couleur du texte
 		textColor.r = 255;
 		textColor.g = 255;
 		textColor.b = 255;
 		if( !loadFromRenderedText( renderer, score, credit) )
 		{
-			printf( "Failed to render text texture!\n" );
+			printf( "LoadFromRenderedText\n" );
 			success = false;
 		}
 	}
 
 	return success;
 }
-
